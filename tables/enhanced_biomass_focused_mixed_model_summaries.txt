@@ -1,0 +1,116 @@
+
+====== Mixed Model: biomass_kg_ha ======
+Linear mixed model fit by REML ['lmerMod']
+Formula: biomass_kg_ha ~ Geomorphology + sedimnt + nutrint + Location +      (1 | Location)
+   Data: analysis_data
+Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
+
+REML criterion at convergence: 1667.4
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.1533 -0.3625 -0.1479  0.2353  5.2599 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Location (Intercept)   5852    76.5   
+ Residual             114069   337.7   
+Number of obs: 125, groups:  Location, 5
+
+Fixed effects:
+                                   Estimate Std. Error t value
+(Intercept)                          312.47     114.85   2.721
+GeomorphologyDeep Lagoon             663.07     253.41   2.617
+GeomorphologyInner Reef Flat        -138.36     123.40  -1.121
+GeomorphologyOuter Reef Flat         856.32     237.62   3.604
+GeomorphologySheltered Reef Slope    547.24     249.58   2.193
+GeomorphologyTerrestrial Reef Flat   392.36     289.20   1.357
+sedimnt                              -40.20     217.40  -0.185
+nutrint                              -97.14     227.06  -0.428
+LocationKuata                       -463.51     207.85  -2.230
+LocationTotoya                      -713.98     237.09  -3.011
+LocationVanuaLevu                   -652.51     263.85  -2.473
+LocationYasawa                      -477.82     177.08  -2.698
+
+Correlation of Fixed Effects:
+            (Intr) GmrpDL GmrIRF GmrORF GmrSRS GmrTRF sedmnt nutrnt LctnKt LctnTt LctnVL
+GmrphlgyDpL -0.481                                                                      
+GmrphlgyIRF -0.059 -0.184                                                               
+GmrphlgyORF -0.516  0.818 -0.217                                                        
+GmrphlgySRS -0.580  0.813 -0.262  0.870                                                 
+GmrphlgyTRF -0.525  0.818 -0.249  0.831  0.902                                          
+sedimnt     -0.511  0.702 -0.415  0.775  0.897  0.824                                   
+nutrint      0.522 -0.729  0.390 -0.813 -0.893 -0.827 -0.977                            
+LocationKut -0.050 -0.585  0.226 -0.504 -0.557 -0.657 -0.460  0.425                     
+LocationTty -0.025 -0.472  0.239 -0.590 -0.461 -0.456 -0.452  0.553  0.360              
+LocatinVnLv  0.167 -0.748  0.339 -0.797 -0.786 -0.751 -0.755  0.749  0.645  0.567       
+LocationYsw -0.099 -0.518  0.196 -0.559 -0.557 -0.568 -0.414  0.425  0.628  0.489  0.645
+
+R2 (marginal/conditional):
+           R2m       R2c
+[1,] 0.3079352 0.3417046
+
+Variance Components:
+       grp        var1 var2       vcov     sdcor
+1 Location (Intercept) <NA>   5851.541  76.49536
+2 Residual        <NA> <NA> 114069.145 337.74124
+
+====== Mixed Model: abundance_ind_250m2 ======
+Linear mixed model fit by REML ['lmerMod']
+Formula: abundance_ind_250m2 ~ Geomorphology + sedimnt + nutrint + Location +      (1 | Location)
+   Data: analysis_data
+Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
+
+REML criterion at convergence: 1421.4
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.7052 -0.5886 -0.0873  0.3213  5.0910 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Location (Intercept)  2034     45.1   
+ Residual             12937    113.7   
+Number of obs: 125, groups:  Location, 5
+
+Fixed effects:
+                                    Estimate Std. Error t value
+(Intercept)                         159.1769    53.5363   2.973
+GeomorphologyDeep Lagoon            309.8437    85.3400   3.631
+GeomorphologyInner Reef Flat        -67.9762    41.5565  -1.636
+GeomorphologyOuter Reef Flat        323.2662    80.0236   4.040
+GeomorphologySheltered Reef Slope    58.9318    84.0533   0.701
+GeomorphologyTerrestrial Reef Flat  -32.5644    97.3958  -0.334
+sedimnt                               0.6847    73.2139   0.009
+nutrint                             -55.6401    76.4680  -0.728
+LocationKuata                        -2.4730    87.4066  -0.028
+LocationTotoya                     -266.3646    95.4764  -2.790
+LocationVanuaLevu                  -191.9051   103.1320  -1.861
+LocationYasawa                       57.2271    79.3513   0.721
+
+Correlation of Fixed Effects:
+            (Intr) GmrpDL GmrIRF GmrORF GmrSRS GmrTRF sedmnt nutrnt LctnKt LctnTt LctnVL
+GmrphlgyDpL -0.347                                                                      
+GmrphlgyIRF -0.043 -0.184                                                               
+GmrphlgyORF -0.373  0.818 -0.217                                                        
+GmrphlgySRS -0.419  0.813 -0.262  0.870                                                 
+GmrphlgyTRF -0.379  0.818 -0.249  0.831  0.902                                          
+sedimnt     -0.369  0.702 -0.415  0.775  0.897  0.824                                   
+nutrint      0.377 -0.729  0.390 -0.813 -0.893 -0.827 -0.977                            
+LocationKut -0.322 -0.468  0.181 -0.403 -0.446 -0.526 -0.369  0.341                     
+LocationTty -0.283 -0.395  0.200 -0.494 -0.386 -0.381 -0.378  0.462  0.405              
+LocatinVnLv -0.144 -0.645  0.292 -0.687 -0.678 -0.647 -0.650  0.645  0.597  0.547       
+LocationYsw -0.377 -0.389  0.147 -0.420 -0.419 -0.427 -0.311  0.320  0.575  0.488  0.585
+optimizer (bobyqa) convergence code: 0 (OK)
+unable to evaluate scaled gradient
+ Hessian is numerically singular: parameters are not uniquely determined
+
+
+R2 (marginal/conditional):
+           R2m       R2c
+[1,] 0.4496709 0.5244337
+
+Variance Components:
+       grp        var1 var2      vcov     sdcor
+1 Location (Intercept) <NA>  2033.837  45.09808
+2 Residual        <NA> <NA> 12937.235 113.74197

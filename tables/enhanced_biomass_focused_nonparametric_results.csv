@@ -1,0 +1,3 @@
+"Response","Test","Statistic","df","p_value","Effect_Size","n_groups","total_n"
+"biomass_kg_ha","Kruskal-Wallis",4.45761418388736,4,0.347602968963757,0.00381345153239465,5,125
+"abundance_ind_250m2","Kruskal-Wallis",13.008401015121,4,0.0112348179632636,0.0750700084593419,5,125
