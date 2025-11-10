@@ -1,0 +1,9 @@
+Permutation test for adonis under reduced model
+Permutation: free
+Number of permutations: 999
+
+vegan::adonis2(formula = dist_matrix ~ Location, data = analysis_data, permutations = 999)
+          Df SumOfSqs      R2      F Pr(>F)
+Model      4  1075654 0.04784 1.5073  0.174
+Residual 120 21409433 0.95216              
+Total    124 22485087 1.00000              

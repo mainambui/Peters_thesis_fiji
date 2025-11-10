@@ -1,12 +1,14 @@
-#Fiji Datanalysis pipeline
-# =================================================================
+#  ANALYSIS PIPELINE 
+
+# Date: 2025
 # Description: Complete analysis pipeline for reef ecology data including:
 #              - Data validation and cleaning
 #              - Linear and mixed effects models
 #              - Multivariate analysis (PCA, PERMANOVA)
 #              - Non-parametric tests
 #              - Comprehensive visualization and reporting
-# outouts:
+
+# OUTPUTS:
 # - figures/: Visualizations and plots
 # - tables/: Statistical results and coefficients
 # - models/: Model objects and summaries
@@ -57,11 +59,11 @@ install_and_load_packages <- function() {
   cat("✅ All packages loaded successfully!\n")
 }
 
-# Install and load packages
+#Install and load packages
 install_and_load_packages()
 
-# SET WORKING DIRECTORY AND LOAD DATA
-# ===================================
+#SET WORKING DIRECTORY AND LOAD DATA
+
 cat("Setting up working directory and loading data...\n")
 
 # Check if working directory is set, if not use current (user-editable default)
@@ -70,7 +72,7 @@ if (!exists("custom_wd")) {
   cat("Using working directory:", custom_wd, "\n")
 }
 if (!dir.exists(custom_wd)) {
-  stop("❌ Working directory does not exist: ", custom_wd)
+  stop("Working directory does not exist: ", custom_wd)
 }
 setwd(custom_wd)
 
@@ -79,10 +81,10 @@ load_reef_data <- function(file_path = "DOV_transect_connect_final.csv") {
   if (file.exists(file_path)) {
     cat("Loading data from:", file_path, "\n")
     data <- read.csv(file_path)
-    cat("✅ Data loaded successfully:", nrow(data), "rows,", ncol(data), "columns\n")
+    cat("ata loaded successfully:", nrow(data), "rows,", ncol(data), "columns\n")
     return(data)
   } else {
-    stop("❌ Data file not found: ", file_path,
+    stop("Data file not found: ", file_path,
          "\nPlease ensure the file exists in the working directory.")
   }
 }
@@ -147,7 +149,7 @@ validate_analysis_data <- function(data, response_vars, predictor_vars) {
     }
   }
   
-  # Check for complete cases (only over available columns)
+  #Check for complete cases (only over available columns)
   cc_cols <- c(intersect(response_vars, names(data)), intersect(predictor_vars, names(data)))
   if (length(cc_cols) > 0) {
     complete_cases <- complete.cases(data[, cc_cols, drop = FALSE])
@@ -159,31 +161,31 @@ validate_analysis_data <- function(data, response_vars, predictor_vars) {
     }
   }
   
-  # Print validation results
+  #Print validation results
   if (length(issues$errors) > 0) {
-    cat("❌ ERRORS:\n"); cat(paste("  -", issues$errors), sep = "\n")
+    cat("RRORS:\n"); cat(paste("  -", issues$errors), sep = "\n")
   }
   if (length(issues$warnings) > 0) {
-    cat("⚠️  WARNINGS:\n"); cat(paste("  -", issues$warnings), sep = "\n")
+    cat(" WARNINGS:\n"); cat(paste("  -", issues$warnings), sep = "\n")
   }
   if (length(issues$errors) == 0 & length(issues$warnings) == 0) {
-    cat("✅ All data validation checks passed\n")
+    cat("All data validation checks passed\n")
   }
   
   return(issues)
 }
 
-# DATA CLEANING AND PREPARATION
-# =============================
+#DATA CLEANING AND PREPARATION
+
 cat("=== DATA CLEANING AND PREPARATION ===\n")
 clean_data <- data %>%
-  # Convert character columns to factors
+  #Convert character columns to factors
   mutate(across(where(is.character), as.factor)) %>%
-  # Remove rows with missing values in key columns (guard columns that may not exist)
+  #Remove rows with missing values in key columns (guard columns that may not exist)
   filter(!if_any(any_of(c("biomass_kg_ha", "abundance_ind_250m2", "FRic", "FEve", "FDiv", "FDis", "RaoQ")), is.na)) %>%
-  # Create unique site identifier
+  #Create unique site identifier
   mutate(Site_ID = paste(Location, Dive_Site, sep = "_")) %>%
-  # Keep only locations with sufficient replicates
+  #Keep only locations with sufficient replicates
   group_by(Location) %>%
   filter(n() >= 3) %>%
   ungroup()
@@ -193,8 +195,8 @@ cat("  - Original data:", nrow(data), "rows\n")
 cat("  - Cleaned data:", nrow(clean_data), "rows\n")
 cat("  - Locations:", paste(unique(clean_data$Location), collapse = ", "), "\n")
 
-# CREATE OUTPUT DIRECTORIES
-# =========================
+#CREATE OUTPUT DIRECTORIES
+
 create_output_directories <- function() {
   dirs <- c("figures", "tables", "models", "ordination", "diagnostics", "reports")
   for (dir in dirs) {
@@ -203,12 +205,12 @@ create_output_directories <- function() {
       cat("Created directory:", dir, "\n")
     }
   }
-  cat("✅ All output directories created successfully!\n")
+  cat("ll output directories created successfully!\n")
 }
 create_output_directories()
 
-# ENHANCED PAIRWISE PERMANOVA FUNCTION
-# ====================================
+#ENHANCED PAIRWISE PERMANOVA FUNCTION
+
 pairwise.adonis2 <- function(x, data, permutations = 999, method = "euclidean", p_adjust = "BH", ...) {
   locations <- unique(data$Location)
   results <- list()
@@ -219,7 +221,7 @@ pairwise.adonis2 <- function(x, data, permutations = 999, method = "euclidean", 
       loc1 <- locations[i]
       loc2 <- locations[j]
       
-      # Subset data for this pair
+      #Subset data for this pair
       pair_data <- data[data$Location %in% c(loc1, loc2), , drop = FALSE]
       pair_matrix <- x[data$Location %in% c(loc1, loc2), , drop = FALSE]
       
@@ -246,11 +248,11 @@ pairwise.adonis2 <- function(x, data, permutations = 999, method = "euclidean", 
     }
   }
   
-  # Apply p-value adjustment
+  #Apply p-value adjustment
   if (nrow(pairwise_results) > 0) {
     pairwise_results$p_adj <- p.adjust(pairwise_results$p_value, method = p_adjust)
     
-    # Update results list with adjusted p-values
+    #Update results list with adjusted p-values
     for (i in 1:nrow(pairwise_results)) {
       comp_name <- pairwise_results$Comparison[i]
       results[[comp_name]]$p_adj <- pairwise_results$p_adj[i]
@@ -263,15 +265,15 @@ pairwise.adonis2 <- function(x, data, permutations = 999, method = "euclidean", 
   ))
 }
 
-# ENHANCED MODEL DIAGNOSTICS FUNCTION
-# ===================================
+#MODEL DIAGNOSTICS FUNCTION
+
 create_model_diagnostics <- function(model, response_var, model_type = "lm") {
   plots <- list()
   diagnostics <- list()
   
   if (inherits(model, "lm") | inherits(model, "lmerMod")) {
     
-    # Extract residuals and fitted values
+    #Extract residuals and fitted values
     if (inherits(model, "lmerMod")) {
       fitted_vals <- fitted(model)
       residuals_vals <- residuals(model, type = "pearson")
@@ -280,7 +282,7 @@ create_model_diagnostics <- function(model, response_var, model_type = "lm") {
       residuals_vals <- residuals(model)
     }
     
-    # 1. Residuals vs Fitted plot
+    #1.Residuals vs Fitted plot
     p1 <- ggplot(data = data.frame(fitted = fitted_vals,
                                    residuals = residuals_vals),
                  aes(x = fitted, y = residuals)) +
@@ -293,7 +295,7 @@ create_model_diagnostics <- function(model, response_var, model_type = "lm") {
       theme_minimal() +
       theme(plot.title = element_text(face = "bold"))
     
-    # 2. Q-Q plot for normality
+    #2.Q-Q plot for normality
     p2 <- ggplot(data = data.frame(residuals = residuals_vals),
                  aes(sample = residuals)) +
       stat_qq(alpha = 0.6, size = 2) +
@@ -304,7 +306,7 @@ create_model_diagnostics <- function(model, response_var, model_type = "lm") {
       theme_minimal() +
       theme(plot.title = element_text(face = "bold"))
     
-    # 3. Scale-Location plot
+    #3.Scale-Location plot
     p3 <- ggplot(data = data.frame(fitted = fitted_vals,
                                    sqrt_abs_resid = sqrt(abs(residuals_vals))),
                  aes(x = fitted, y = sqrt_abs_resid)) +
@@ -316,7 +318,7 @@ create_model_diagnostics <- function(model, response_var, model_type = "lm") {
       theme_minimal() +
       theme(plot.title = element_text(face = "bold"))
     
-    # 4. Residuals vs Leverage
+    #4.Residuals vs Leverage
     if (inherits(model, "lm")) {
       leverage <- hatvalues(model)
       p4 <- ggplot(data = data.frame(leverage = leverage,
@@ -341,13 +343,13 @@ create_model_diagnostics <- function(model, response_var, model_type = "lm") {
       leverage = p4
     )
     
-    # Statistical tests (for lm)
+    #Statistical tests (for lm)
     if (inherits(model, "lm")) {
-      # Normality test
+      #Normality test
       normality_test <- shapiro.test(residuals_vals)
       diagnostics$normality_test <- normality_test
       
-      # Heteroscedasticity test
+      #Heteroscedasticity test
       hetero_test <- car::ncvTest(model)
       diagnostics$heteroscedasticity_test <- hetero_test
       
@@ -362,10 +364,10 @@ create_model_diagnostics <- function(model, response_var, model_type = "lm") {
   return(list(plots = plots, diagnostics = diagnostics))
 }
 
-# ENHANCED CORRELATION MATRIX FUNCTION
+#ENHANCED CORRELATION MATRIX FUNCTION
 # ====================================
 create_correlation_plot <- function(data, response_vars, method = "pearson") {
-  # Select only numeric variables for correlation
+  #Select only numeric variables for correlation
   numeric_data <- data %>%
     dplyr::select(where(is.numeric)) %>%
     dplyr::select(any_of(response_vars)) %>%
@@ -398,9 +400,8 @@ create_correlation_plot <- function(data, response_vars, method = "pearson") {
   return(p)
 }
 
-# NON-PARAMETRIC ANALYSIS FUNCTION
-# ================================
-# Brief: Kruskal–Wallis across groups and BH-adjusted pairwise Wilcoxon.
+#NON-PARAMETRIC ANALYSIS FUNCTION
+#Kruskal–Wallis across groups and BH-adjusted pairwise Wilcoxon.
 # 'exact = FALSE' avoids tie warnings; results remain valid (large-sample approx).
 nonparametric_analysis <- function(data, response_vars, group_var = "Location") {
   results <- list()
@@ -419,7 +420,7 @@ nonparametric_analysis <- function(data, response_vars, group_var = "Location") 
         "df =", kruskal_test$parameter,
         "p =", round(kruskal_test$p.value, 4), "\n")
     
-    # Pairwise Wilcoxon tests with p-value adjustment (ties-safe)
+    #Pairwise Wilcoxon tests with p-value adjustment (ties-safe)
     if (kruskal_test$p.value < 0.05) {
       pairwise_wilcox <- pairwise.wilcox.test(
         data[[resp]], data[[group_var]],
@@ -434,7 +435,7 @@ nonparametric_analysis <- function(data, response_vars, group_var = "Location") 
       cat("No significant overall effect - skipping pairwise tests\n")
     }
     
-    # Effect size - epsilon squared
+    #Effect size - epsilon squared
     n <- nrow(data)
     k <- length(unique(data[[group_var]]))
     epsilon_squared <- as.numeric((kruskal_test$statistic - (k - 1)) / (n - k))
@@ -452,9 +453,8 @@ nonparametric_analysis <- function(data, response_vars, group_var = "Location") 
 }
 
 
-# COMPREHENSIVE PCA PLOTTING FUNCTION
-# ===================================
-# Brief: Performs PCA on numeric response matrix, returns (1) scores plot with
+#COMPREHENSIVE PCA PLOTTING FUNCTION
+#  Performs PCA on numeric response matrix, returns (1) scores plot with
 # 95% ellipses (only for groups with n >= 3), (2) variance explained, and
 # (3) loadings plot. Ellipse condition prevents "no non-missing arguments" warnings.
 create_pca_plots_comprehensive <- function(pca_result, metadata, response_vars) {
@@ -468,11 +468,11 @@ create_pca_plots_comprehensive <- function(pca_result, metadata, response_vars) 
   }
   variance_explained <- round(100 * pca_result$sdev^2 / sum(pca_result$sdev^2), 2)
   
-  # Only draw ellipses for groups with >= 3 points
+  #Only draw ellipses for groups with >= 3 points
   group_sizes <- table(pca_scores$Location)
   has_ellipse <- names(group_sizes[group_sizes >= 3])
   
-  # 1. Main PCA plot with conditional ellipses
+  #1.Main PCA plot with conditional ellipses
   pca_main <- ggplot(pca_scores, aes(x = PC1, y = PC2, color = Location)) +
     geom_point(size = 3, alpha = 0.8) +
     { if (length(has_ellipse) > 0)
@@ -493,7 +493,7 @@ create_pca_plots_comprehensive <- function(pca_result, metadata, response_vars) 
     ) +
     scale_color_viridis_d(option = "plasma")
   
-  # 2. Variance explained plot
+  #2.Variance explained plot
   variance_data <- data.frame(
     PC = paste0("PC", 1:length(variance_explained)),
     Variance = variance_explained,
@@ -518,7 +518,7 @@ create_pca_plots_comprehensive <- function(pca_result, metadata, response_vars) 
     ) +
     scale_y_continuous(sec.axis = sec_axis(~./100, name = "Cumulative Proportion"))
   
-  # 3. Loadings plot
+  #3.Loadings plot
   loadings <- as.data.frame(pca_result$rotation[, 1:2, drop = FALSE])
   loadings$Variable <- rownames(loadings)
   
@@ -549,32 +549,46 @@ create_pca_plots_comprehensive <- function(pca_result, metadata, response_vars) 
 }
 
 
-# ANALYSIS CONFIGURATION SYSTEM
-# =============================
+#ANALYSIS CONFIGURATION SYSTEM
+#########
+###
+##pare5BROF,pare5BRIF,pare5LR,pare5BRin,pare5BRout,
+#resid15BROF,resid15BRIF,resid15LR,resid15BRin,resid15BRout,
+#transi15BROF,transi15BRIF,transi15LR,transi15BRin,transi15BRout
+####
+#Clean_Data$logLR<-log1p(Clean_Data$crypto5LR)
+#Clean_Data$logIF<-log1p(Clean_Data$resid15BRIF)
+#Clean_Data$netflow<- (Clean_Data$crypto5BROF - Clean_Data$crypto5BRIF)/(Clean_Data$crypto5BROF + Clean_Data$crypto5BRIF)
+
+
+
+
+#########
 analysis_config <- list(
   core_ecological = list(
     response_vars = c("biomass_kg_ha", "abundance_ind_250m2", "FRic", "FEve"),
-    predictor_vars = c("Geomorphology", "sedimnt", "nutrint", "Location"),
+    predictor_vars = c("Geomorphology", "sedimnt", "nutrint","NO_TK_AREA" ,"NO_TK_AREA" , "Location","crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout","sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
     random_effects = c("(1|Location)"),
     description = "Core ecological variables analysis"
   ),
   functional_diversity = list(
     response_vars = c("FRic", "FEve", "FDiv", "FDis", "RaoQ"),
-    predictor_vars = c("Geomorphology", "sedimnt", "Location"),
+    predictor_vars = c("Geomorphology", "sedimnt", "nutrint","NO_TK_AREA" ,"NO_TK_AREA" , "Location","crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout","sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
     random_effects = c("(1|Location)"),
     description = "Functional diversity metrics analysis"
   ),
   biomass_focused = list(
     response_vars = c("biomass_kg_ha", "abundance_ind_250m2"),
-    predictor_vars = c("Geomorphology", "sedimnt", "nutrint", "Location"),
+    predictor_vars = c("Geomorphology", "sedimnt", "nutrint","NO_TK_AREA" ,"NO_TK_AREA" , "Location","crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout","sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
     random_effects = c("(1|Location)"),
     description = "Biomass and abundance focused analysis"
   )
 )
 
-# ENHANCED COMPREHENSIVE ANALYSIS FUNCTION
-# ========================================
-# Brief: Full pipeline runner: descriptive stats, plots, non-parametrics,
+
+
+#ANALYSIS FUNCTION
+#  descriptive stats, plots, non-parametrics,
 # linear models, mixed models (with optional Location-as-random-only toggle),
 # PCA, PERMANOVA, and saving of all artifacts.
 analyze_reef_data_enhanced <- function(
@@ -594,7 +608,7 @@ analyze_reef_data_enhanced <- function(
   cat(strrep("=", 70), "\n")
   
   # --- NEW: toggle to avoid Location as both fixed and random (keeps default as-is)
-  lmm_location_as_random_only <- FALSE  # set TRUE to drop 'Location' from fixed effects when (1|Location) used
+  lmm_location_as_random_only <- TRUE  # set TRUE to drop 'Location' from fixed effects when (1|Location) used
   
   # Input validation
   if (length(response_vars) == 0) stop("No response variables specified.")
@@ -617,8 +631,8 @@ analyze_reef_data_enhanced <- function(
     stop("No complete cases after filtering. Check variable names and missing data.")
   }
   
-  # --- NEW: light scaling for continuous predictors to improve conditioning
-  # (does not alter saved raw summaries; only improves model fit numerics)
+  #light scaling for continuous predictors to improve conditioning
+  #(does not alter saved raw summaries; only improves model fit numerics)
   num_cols <- intersect(c("sedimnt", "nutrint"), names(analysis_data))
   if (length(num_cols) > 0) {
     analysis_data[num_cols] <- lapply(analysis_data[num_cols], function(z) as.numeric(scale(z)))
@@ -644,7 +658,7 @@ analyze_reef_data_enhanced <- function(
     )
   )
   
-  # 1. ENHANCED DESCRIPTIVE STATISTICS
+  #1.DESCRIPTIVE STATISTICS
   # ==================================
   cat("\n=== ENHANCED DESCRIPTIVE STATISTICS ===\n")
   
@@ -704,13 +718,13 @@ analyze_reef_data_enhanced <- function(
                      row.names = FALSE)
   }
   
-  # 2. ENHANCED DATA VISUALIZATION
-  # ==============================
+  #2. VISUALIZATION
+
   plots <- list()
   if (isTRUE(create_plots)) {
     cat("\n=== ENHANCED DATA VISUALIZATION ===\n")
     
-    # 2.1 Boxplots for each response variable
+    #2.1 Boxplots for each response variable
     for (resp in response_vars) {
       if (!resp %in% names(analysis_data)) next
       p_box <- ggplot(analysis_data, aes(x = Location, y = .data[[resp]], fill = Location)) +
@@ -736,7 +750,7 @@ analyze_reef_data_enhanced <- function(
       }
     }
     
-    # 2.2 Correlation matrix
+    #2.2 Correlation matrix
     cor_plot <- create_correlation_plot(analysis_data, response_vars)
     if (!is.null(cor_plot)) {
       plots[["correlation_matrix"]] <- cor_plot
@@ -749,8 +763,8 @@ analyze_reef_data_enhanced <- function(
   }
   results[["plots"]] <- plots
   
-  # 3. NON-PARAMETRIC ANALYSIS
-  # ==========================
+  #3.NON-PARAMETRIC ANALYSIS
+
   if (isTRUE(run_nonparametric)) {
     nonparametric_results <- nonparametric_analysis(analysis_data, response_vars)
     results[["nonparametric"]] <- nonparametric_results
@@ -775,8 +789,8 @@ analyze_reef_data_enhanced <- function(
     }
   }
   
-  # 4. LINEAR MODELS WITH ENHANCED DIAGNOSTICS
-  # ===========================================
+  #4.LINEAR MODELS WITH ENHANCED DIAGNOSTICS
+
   cat("\n=== LINEAR MODELS WITH ENHANCED DIAGNOSTICS ===\n")
   
   lm_results <- list()
@@ -821,8 +835,8 @@ analyze_reef_data_enhanced <- function(
       }
     }
     
-    # --- NEW: Multicollinearity screening (VIF) for LM + inline flagged summary
-    # Uses car::vif; for multi-df factors, we report GVIF and GVIF^(1/(2*Df)).
+    #Multicollinearity screening (VIF) for LM + inline flagged summary
+    #Uses car::vif; for multi-df factors, we report GVIF and GVIF^(1/(2*Df)).
     vif_tbl <- NULL
     vif_tbl <- tryCatch({
       vf <- car::vif(lm_model)
@@ -891,7 +905,7 @@ analyze_reef_data_enhanced <- function(
               file.path("tables", paste0(output_prefix, "_linear_model_performance.csv")),
               row.names = FALSE)
     
-    # --- NEW: Combined VIF across responses
+    #Combined VIF across responses
     all_vif <- purrr::map_dfr(names(lm_results), function(nm) {
       vt <- lm_results[[nm]]$vif
       if (is.null(vt)) return(NULL)
@@ -906,8 +920,8 @@ analyze_reef_data_enhanced <- function(
     }
   }
   
-  # 5. MIXED EFFECTS MODELS WITH ENHANCED DIAGNOSTICS
-  # =================================================
+  #5.MIXED EFFECTS MODELS WITH checks
+
   cat("\n=== MIXED EFFECTS MODELS WITH ENHANCED DIAGNOSTICS ===\n")
   
   mixed_results <- list()
@@ -1182,3 +1196,4 @@ res_biomass <- analyze_reef_data_enhanced(
   run_diagnostics = TRUE,
   run_nonparametric = TRUE
 )
+
