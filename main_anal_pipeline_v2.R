@@ -1,14 +1,13 @@
 # ======================================================================
-#  ANALYSIS PIPELINE  — FIji Analyses
-#  Complete, annotated pipeline with:
-#    • Data validation & cleaning
-#    • Linear (LM) & Mixed (LMM) models with collinearity control
-#    • Predictor scaling (LMM always; LM configurable)
-#    • Univariate panel for excluded predictors (LM + LMM)
-#    • Non-parametric tests (Kruskal–Wallis, pairwise Wilcoxon BH)
-#    • PCA & PERMANOVA
-#    • Diagnostics, figures, tables, RDS models, report stub
-#    • Type III tests for LMMs; singular-LMM auto-flag; corrected VIF logic
+#ANALYSIS PIPELINE  — FIji Analyses
+#Data vcleaning
+#Linear (LM) & Mixed (LMM) models with collinearity control
+#Predictor scaling (LMM always; LM configurable)
+#Univariate for excluded predictors (LM + LMM)
+#Non-parametric tests (Kruskal–Wallis, pairwise Wilcoxon BH)
+#PCA and PERMANOVA
+#Diagnostics, figures, tables, RDS models, report stub
+#Type III tests for LMMs; singular-LMM auto-flag; corrected VIF logic
 # ======================================================================
 
 rm(list = ls())
@@ -55,11 +54,11 @@ choice_tbl <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# Helper forType III with a specific df method
+# Helper forType III
 attempt_type3 <- function(model, ddf = c("Kenward-Roger","Satterthwaite")) {
   ddf <- match.arg(ddf)
   tryCatch(
-    anova(model, type = 3, ddf = ddf),  # rely on S3 dispatch from lmerTest
+    anova(model, type = 3, ddf = ddf),  #
     error = function(e) { message("Type III (", ddf, ") failed: ", conditionMessage(e)); NULL }
   )
 }
@@ -68,9 +67,9 @@ attempt_type3 <- function(model, ddf = c("Kenward-Roger","Satterthwaite")) {
 #For reproducible steps (screening, DHARMa sims etc.)
 set.seed(42)
 
-# ---------------------------
+
 # Working dir and  data loading
-# ---------------------------
+
 cat("Setting up working directory and loading data...\n")
 if (!exists("custom_wd")) {
   custom_wd <- getwd()
@@ -94,9 +93,7 @@ data <- load_reef_data()
 
 #----------------------------
 #explore the dataset to see what vaeiables have bene loaded and think anout your reapose variables
-#------------------------------
 
-# ---------------------------
 # Output directiries
 # ---------------------------
 create_output_directories <- function() {
@@ -159,7 +156,7 @@ validate_analysis_data <- function(data, response_vars, predictor_vars) {
 }
 
 # ---------------------------
-# Prepare data
+#prep data
 # ---------------------------
 cat("=== DATA CLEANING AND PREPARATION ===\n")
 clean_data <- data %>%
@@ -203,7 +200,7 @@ pairwise.adonis2 <- function(x, data, permutations = 999, method = "euclidean", 
 }
 
 # ---------------------------
-# Diagnostics plots
+#Diagnostics plots
 # ---------------------------
 create_model_diagnostics <- function(model, response_var, model_type = "lm") {
   plots <- list(); diagnostics <- list()
@@ -349,10 +346,8 @@ create_pca_plots_comprehensive <- function(pca_result, metadata, response_vars) 
   list(main=pca_main, variance=pca_variance, loadings=pca_loadings)
 }
 
-# ======================================================================
-# Collinearity control + scaling for LM & LMM
-# ======================================================================
-# 1) Scale numeric predictors in-place (responses are NOT scaled)
+#Collinearity control + scaling for LM & LMM
+#1) Scale numeric predictors in-place (responses are NOT scaled)
 scale_predictors_inplace <- function(df, predictor_vars, center = TRUE, scale = TRUE) {
   num_preds <- predictor_vars[predictor_vars %in% names(df)]
   num_preds <- num_preds[sapply(num_preds, \(v) is.numeric(df[[v]]))]
@@ -361,7 +356,7 @@ scale_predictors_inplace <- function(df, predictor_vars, center = TRUE, scale = 
   list(data=df, scaled_cols=num_preds)
 }
 
-# 2) Correlation screen (numeric-only): remove variables to keep r <= threshold
+# 2)Correlation screen (numeric-only): remove variables to keep r <= threshold
 correlation_screen <- function(df, predictors, thr = 0.75) {
   keep <- predictors
   numeric_preds <- keep[keep %in% names(df)]
@@ -369,7 +364,7 @@ correlation_screen <- function(df, predictors, thr = 0.75) {
   if (length(numeric_preds) < 2) return(list(kept=keep, dropped_pairs=data.frame()))
   cm <- stats::cor(df[, numeric_preds, drop=FALSE], use="pairwise.complete.obs")
   dropped <- data.frame(var_removed=character(), rival=character(), r=numeric())
-  # Greedy: drop the variable with the largest average |r| when any pair exceeds thr
+  #Greedy: drop the variable with the largest average r when any pair exceeds thr
   repeat {
     above <- which(abs(cm) > thr & lower.tri(cm), arr.ind = TRUE)
     if (!nrow(above)) break
@@ -391,7 +386,7 @@ correlation_screen <- function(df, predictors, thr = 0.75) {
   list(kept=keep, dropped_pairs=dropped)
 }
 
-# 3) Iterative (G)VIF screen using LM (proxy for LMM fixedpart collinearity)
+#3)Iterative (G)VIF screen using LM (proxy for LMM fixedpart collinearity)
 vif_screen <- function(df, response, predictors, vif_threshold = 5, exclude_terms = character(0)) {
   preds <- setdiff(predictors, exclude_terms)
   dropped <- tibble::tibble(term=character(), GVIF=numeric(), Df=integer(), GVIF_adj=numeric())
@@ -416,7 +411,7 @@ vif_screen <- function(df, response, predictors, vif_threshold = 5, exclude_term
       data.frame(Term=names(vf), Df=1L, GVIF=as.numeric(vf), GVIF_adj=sqrt(as.numeric(vf)))
     }
     
-    # thresholding rule:
+    #aplythresholding rule:
     vif_tbl$Check <- ifelse(vif_tbl$Df == 1, vif_tbl$GVIF, vif_tbl$GVIF_adj)
     path[[length(path)+1]] <- vif_tbl
     
@@ -431,7 +426,7 @@ vif_screen <- function(df, response, predictors, vif_threshold = 5, exclude_term
 }
 
 
-# p.value for lmer models
+#p.value for lmer models
 get_lmm_tidy_with_p <- function(mod, effect = "fixed") {
   td <- tryCatch(broom.mixed::tidy(mod, effects = effect), error = function(e) NULL)
   if (is.null(td)) return(NULL)
@@ -461,10 +456,8 @@ compute_lm_robust <- function(lm_model) {
   tb
 }
 
-
-
 # ======================================================================
-# Univariate panel (LM + LMM) for excluded (or all) predictors
+# nivariate panel (LM + LMM) for excluded (or all) predictors
 # ======================================================================
 run_univariate_panel <- function(analysis_data,
                                  response_vars,
@@ -499,7 +492,7 @@ run_univariate_panel <- function(analysis_data,
         out_lm[[paste(resp, pr, "lm", sep = "_")]] <- list(tidy = sm, glance = gl)
       }
       
-      # LMM (only if multiple locations)
+      #LMM (only if multiple locations)
       if ("Location" %in% names(df) && length(unique(df$Location)) > 1) {
         f_lmm <- stats::as.formula(paste(resp, "~", pr, "+ (1|Location)"))
         fit_lmm <- tryCatch(
@@ -569,9 +562,8 @@ run_univariate_panel <- function(analysis_data,
   invisible(list(lm = lm_res, lmm = lmm_res))
 }
 
-# ======================================================================
-# CONFIGS
-# ======================================================================
+
+#CONFIGS
 analysis_config <- list(
   core_ecological = list(
     response_vars = c("biomass_kg_ha", "abundance_ind_250m2", "FRic", "FEve"),
@@ -607,9 +599,8 @@ analysis_config <- list(
   )
 )
 
-# ======================================================================
-# MAIN ANALYSIS FUNCTION
-# ======================================================================
+# MAIN ANALYSIS FUNCTIONS
+
 analyze_reef_data_enhanced <- function(
     response_vars,
     predictor_vars,
@@ -639,13 +630,13 @@ analyze_reef_data_enhanced <- function(
   validation_issues <- validate_analysis_data(data, response_vars, predictor_vars)
   if (length(validation_issues$errors) > 0) stop("Critical validation errors. Aborting.")
   
-  # Build analysis dataset
+  #Build analysis dataset
   analysis_data <- data %>%
     dplyr::select(dplyr::any_of(c(response_vars, predictor_vars, "Site_ID","Transect","Dive_Site","Location"))) %>%
     dplyr::filter(stats::complete.cases(.))
   if (nrow(analysis_data) == 0) stop("No complete cases after filtering. Check inputs.")
   
-  # Scaling (predictors only). LMM always; LM optional; we scale once here for both.
+  #Scaling (predictors only). LMM always; LM optional; we scale once here for both.
   to_scale <- predictor_vars[predictor_vars %in% names(analysis_data)]
   to_scale <- to_scale[sapply(to_scale, \(v) is.numeric(analysis_data[[v]]))]
   do_scale <- (scale_predictors_for_LMM || scale_predictors_for_LM)
@@ -662,7 +653,7 @@ analyze_reef_data_enhanced <- function(
       if (length(unique(analysis_data$Location)) > 20) " ... [truncated]" else "", "\n", sep = "")
   if (length(scaled_cols)) cat("  - Scaled predictors:", paste(scaled_cols, collapse = ", "), "\n")
   
-  # Store meta data
+  #Store meta data
   results <- list(metadata = list(
     response_vars = response_vars, predictor_vars = predictor_vars, random_effects = random_effects,
     sample_size = nrow(analysis_data), locations = unique(analysis_data$Location),
@@ -670,7 +661,7 @@ analyze_reef_data_enhanced <- function(
     validation_issues = validation_issues, scaled_predictors = scaled_cols
   ))
   
-  # Descriptive  stats
+  #Descriptive  stats
   cat("\n=== DESCRIPTIVE STATISTICS ===\n")
   location_summary <- analysis_data %>%
     group_by(.data$Location) %>%
@@ -749,24 +740,23 @@ analyze_reef_data_enhanced <- function(
       write.csv(nonparametric_df, file.path("tables", paste0(output_prefix, "_nonparametric_results.csv")), row.names = FALSE)
     }
   }
-  
-  # =====================================================================
-  # Collinearity-aware fixed-effect set for LM & LMM
+
+  #Collinearity-aware fixed-effect set for LM & LMM
   # =====================================================================
   fixed_candidates <- predictor_vars
   if (lmm_location_as_random_only) fixed_candidates <- setdiff(fixed_candidates, "Location")
   
-  # A:Correlation screen
+  #A:Correlation screen
   cor_scr <- correlation_screen(analysis_data, predictors = fixed_candidates, thr = cor_threshold)
   fixed_after_cor <- cor_scr$kept
   
-  # B:VIF screen (use first available numeric response as proxy)
+  #B:VIF screen (use first available numeric response as proxy)
   proxy_resp <- response_vars[response_vars %in% names(analysis_data)][1]
   vif_scr <- vif_screen(analysis_data, response = proxy_resp, predictors = fixed_after_cor,
                         vif_threshold = vif_threshold, exclude_terms = character(0))
   fixed_screened <- vif_scr$kept
   
-  # Log screening
+  #Log screening
   screening_log <- list(
     fixed_initial = fixed_candidates,
     correlation_dropped = cor_scr$dropped_pairs,
@@ -824,7 +814,7 @@ analyze_reef_data_enhanced <- function(
       }
     }
     
-    # VIF 
+    # IF 
     vif_tbl <- NULL
 
     vif_tbl <- tryCatch({
@@ -857,7 +847,7 @@ analyze_reef_data_enhanced <- function(
     
     cat("\nVIF summary for ", resp, ":\n", sep = "")
     print(vif_tbl)
-    # end VIF
+    #end VIF
     
     
     lm_results[[resp]] <- list(
@@ -1203,7 +1193,7 @@ res_fd <- analyze_reef_data_enhanced(
 
 #Biomass focused
 cfg <- analysis_config$biomass_focused
-# purge_outputs_by_prefix("biomass_focused")
+#urge_outputs_by_prefix("biomass_focused")
 res_biomass <- analyze_reef_data_enhanced(
   response_vars = cfg$response_vars,
   predictor_vars = cfg$predictor_vars,
