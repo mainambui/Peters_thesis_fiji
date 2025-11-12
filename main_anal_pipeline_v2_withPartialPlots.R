@@ -8,9 +8,8 @@
 #PCA & PERMANOVA
 #Diagnostics, figures, tables, RDS models, report stub
 #Type III tests for LMMs; singular-LMM auto-flag; corrected VIF logic
-#Partial ploits for LM and LMM
-# ======================================================================
-
+#Partial plots for LM and LMM
+#======================================================================
 rm(list = ls())
 cat("Initializing Reef Ecology Analysis Pipeline...\n")
 
@@ -91,7 +90,6 @@ load_reef_data <- function(file_path = "DOV_transect_connect_final.csv") {
 data <- load_reef_data()
 
 #explore the dataset to see what vaeiables have bene loaded and think anout your reapose variables
-
 # Output directiries
 create_output_directories <- function() {
   dirs <- c("figures","tables","models","ordination","diagnostics","reports")
@@ -698,7 +696,8 @@ run_univariate_panel <- function(analysis_data,
 }
 
 
-#CONFIGURATIONS
+#CONFIGURATIONSu 
+##this is where you modify your predictir vars
 analysis_config <- list(
   core_ecological = list(
     response_vars = c("biomass_kg_ha", "abundance_ind_250m2", "FRic", "FEve"),
@@ -721,7 +720,7 @@ analysis_config <- list(
     predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Location",
                        "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
                        "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
-    random_effects = c("(1|Location)"),
+    random_effects = c("(1|Location)"),#define the random effects
     description = "Biomass and abundance focused analysis"
   ),
   all_responses = list(
