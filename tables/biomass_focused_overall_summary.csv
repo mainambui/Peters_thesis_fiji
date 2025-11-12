@@ -1,2 +1,2 @@
 "n_total","n_locations","biomass_kg_ha_mean","biomass_kg_ha_sd","biomass_kg_ha_median","biomass_kg_ha_min","biomass_kg_ha_max","biomass_kg_ha_cv","abundance_ind_250m2_mean","abundance_ind_250m2_sd","abundance_ind_250m2_median","abundance_ind_250m2_min","abundance_ind_250m2_max","abundance_ind_250m2_cv"
-125,5,358.16862242256,396.621972987191,244.6387139,25.28367497,2747.95449,1.10736102538671,197.352,154.991480306957,150,47,876,0.785355508466888
+125,8,358.16862242256,396.621972987191,244.6387139,25.28367497,2747.95449,1.10736102538671,197.352,154.991480306957,150,47,876,0.785355508466888

@@ -5,65 +5,65 @@ Formula: mixed_formula
    Data: analysis_data
 Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
 
-REML criterion at convergence: 1692.7
+REML criterion at convergence: 1683.6
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--2.1783 -0.3730 -0.1191  0.2617  5.2719 
+-3.3857 -0.3638 -0.1312  0.2065  4.9553 
 
 Random effects:
- Groups   Name        Variance Std.Dev.
- Location (Intercept)   9879    99.39  
- Residual             112939   336.06  
-Number of obs: 125, groups:  Location, 5
+ Groups    Name        Variance Std.Dev.
+ Dive_Site (Intercept) 33362    182.7   
+ Residual              92094    303.5   
+Number of obs: 125, groups:  Dive_Site, 26
 
 Fixed effects:
-                Estimate Std. Error        df t value Pr(>|t|)   
-(Intercept)     359.9392    61.6662    0.4773   5.837  0.27760   
-Geomorphology1 -191.6675    95.6522    4.9962  -2.004  0.10149   
-Geomorphology2  143.7062   130.0775   23.7164   1.105  0.28034   
-Geomorphology3 -334.0770   118.0757    7.6700  -2.829  0.02314 * 
-Geomorphology4  372.2295    89.8805    8.4840   4.141  0.00286 **
-Geomorphology5   51.9689    77.1689   18.4853   0.673  0.50900   
-sedimnt         -76.7671    39.7455    8.9465  -1.931  0.08566 . 
-NO_TK_AREA       24.1841    56.0065    4.1863   0.432  0.68720   
-crypto5BROF      68.7471    57.8986    7.4034   1.187  0.27178   
-crypto5BRIF      56.9623    57.7978    1.1488   0.986  0.48703   
-crypto5BRin    -158.3277    65.5796    1.5225  -2.414  0.17526   
+               Estimate Std. Error      df t value Pr(>|t|)    
+(Intercept)      371.31      53.96   15.60   6.882 4.23e-06 ***
+Geomorphology1  -220.13     125.23   15.96  -1.758  0.09793 .  
+Geomorphology2   159.73     182.21   16.00   0.877  0.39367    
+Geomorphology3  -354.48     155.37   16.64  -2.281  0.03599 *  
+Geomorphology4   368.73     120.15   16.02   3.069  0.00733 ** 
+Geomorphology5    72.64     109.06   15.51   0.666  0.51515    
+sedimnt          -75.39      54.91   15.35  -1.373  0.18951    
+NO_TK_AREA        18.04      70.30   15.94   0.257  0.80077    
+crypto5BROF       61.43      76.40   16.38   0.804  0.43284    
+crypto5BRIF       30.63      62.09   15.55   0.493  0.62863    
+crypto5BRin     -177.49      77.18   15.38  -2.300  0.03586 *  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Correlation of Fixed Effects:
             (Intr) Gmrph1 Gmrph2 Gmrph3 Gmrph4 Gmrph5 sedmnt NO_TK_ c5BROF c5BRIF
-Geomrphlgy1 -0.089                                                               
-Geomrphlgy2  0.182 -0.250                                                        
-Geomrphlgy3  0.048  0.367 -0.363                                                 
-Geomrphlgy4 -0.053 -0.304 -0.231 -0.218                                          
-Geomrphlgy5 -0.262 -0.185 -0.327 -0.286 -0.061                                   
-sedimnt      0.007  0.127 -0.112 -0.181 -0.163  0.296                            
-NO_TK_AREA   0.011 -0.252 -0.389  0.137  0.410  0.037 -0.169                     
-crypto5BROF -0.006 -0.229 -0.308 -0.267  0.143  0.317  0.178  0.164              
-crypto5BRIF -0.069  0.555 -0.246  0.428 -0.066 -0.209 -0.025 -0.062  0.069       
-crypto5BRin -0.285 -0.169 -0.408  0.131  0.165  0.376 -0.179  0.540  0.217  0.026
+Geomrphlgy1 -0.344                                                               
+Geomrphlgy2  0.372 -0.195                                                        
+Geomrphlgy3 -0.016  0.234 -0.296                                                 
+Geomrphlgy4  0.045 -0.313 -0.168 -0.320                                          
+Geomrphlgy5 -0.383 -0.039 -0.444 -0.182 -0.116                                   
+sedimnt     -0.206  0.071 -0.188 -0.238 -0.054  0.390                            
+NO_TK_AREA   0.064 -0.417 -0.302 -0.008  0.249  0.108 -0.091                     
+crypto5BROF -0.103 -0.359 -0.292 -0.344  0.181  0.441  0.249  0.205              
+crypto5BRIF -0.177  0.416 -0.247  0.292 -0.028  0.001 -0.163 -0.220  0.124       
+crypto5BRin -0.189 -0.061 -0.515  0.212 -0.105  0.419  0.025  0.550  0.401  0.034
 
 R2 (marginal/conditional):
            R2m       R2c
-[1,] 0.2948944 0.3516087
+[1,] 0.3046588 0.4895665
 
 Variance Components:
-       grp        var1 var2       vcov     sdcor
-1 Location (Intercept) <NA>   9878.707  99.39168
-2 Residual        <NA> <NA> 112939.156 336.06421
+        grp        var1 var2     vcov    sdcor
+1 Dive_Site (Intercept) <NA> 33361.66 182.6517
+2  Residual        <NA> <NA> 92094.08 303.4701
 
 Type III tests (Satterthwaite):
 Type III Analysis of Variance Table with Kenward-Roger's method
-               Sum Sq Mean Sq NumDF   DenDF F value  Pr(>F)  
-Geomorphology 2374413  474883     5  9.9848  3.8282 0.03381 *
-sedimnt        358544  358544     1 10.2522  3.1747 0.10438  
-NO_TK_AREA      11452   11452     1  4.8292  0.1014 0.76347  
-crypto5BROF    116295  116295     1  8.5021  1.0297 0.33823  
-crypto5BRIF     58276   58276     1  1.3309  0.5160 0.57747  
-crypto5BRin    452233  452233     1  1.7628  4.0042 0.20021  
+               Sum Sq Mean Sq NumDF  DenDF F value  Pr(>F)  
+Geomorphology 1393383  278677     5 15.181  3.0259 0.04335 *
+sedimnt        173565  173565     1 14.677  1.8846 0.19042  
+NO_TK_AREA       6063    6063     1 15.243  0.0658 0.80094  
+crypto5BROF     59528   59528     1 15.664  0.6464 0.43344  
+crypto5BRIF     22412   22412     1 14.872  0.2434 0.62900  
+crypto5BRin    486938  486938     1 14.700  5.2874 0.03659 *
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -73,64 +73,64 @@ Formula: mixed_formula
    Data: analysis_data
 Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
 
-REML criterion at convergence: 1445.1
+REML criterion at convergence: 1413.5
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--1.6167 -0.6317 -0.0597  0.3937  5.2159 
+-1.8097 -0.4216 -0.0865  0.3361  4.9205 
 
 Random effects:
- Groups   Name        Variance Std.Dev.
- Location (Intercept) 50743    225.3   
- Residual             12034    109.7   
-Number of obs: 125, groups:  Location, 5
+ Groups    Name        Variance Std.Dev.
+ Dive_Site (Intercept) 13482    116.11  
+ Residual               7279     85.32  
+Number of obs: 125, groups:  Dive_Site, 26
 
 Fixed effects:
-               Estimate Std. Error      df t value Pr(>|t|)    
-(Intercept)     177.053    104.875   3.421   1.688   0.1786    
-Geomorphology1  -16.352     60.928  34.552  -0.268   0.7900    
-Geomorphology2  106.800     51.263 113.407   2.083   0.0395 *  
-Geomorphology3  -23.188     62.660  53.457  -0.370   0.7128    
-Geomorphology4  259.143     45.813  63.314   5.656 3.99e-07 ***
-Geomorphology5  -89.232     38.513  50.323  -2.317   0.0246 *  
-sedimnt         -53.418     23.568  35.879  -2.267   0.0295 *  
-NO_TK_AREA       68.812     26.271 108.223   2.619   0.0101 *  
-crypto5BROF       8.852     30.519  69.062   0.290   0.7726    
-crypto5BRIF      76.585     47.871  28.283   1.600   0.1208    
-crypto5BRin      56.347     50.687  38.773   1.112   0.2731    
+               Estimate Std. Error       df t value Pr(>|t|)    
+(Intercept)     220.329     28.829   15.019   7.643 1.49e-06 ***
+Geomorphology1  -97.135     66.622   15.122  -1.458   0.1653    
+Geomorphology2  249.525     96.902   15.130   2.575   0.0210 *  
+Geomorphology3 -179.011     82.045   15.298  -2.182   0.0451 *  
+Geomorphology4  135.712     63.887   15.131   2.124   0.0505 .  
+Geomorphology5  -33.475     58.325   14.998  -0.574   0.5745    
+sedimnt         -16.796     29.428   14.948  -0.571   0.5767    
+NO_TK_AREA      -35.930     37.414   15.109  -0.960   0.3520    
+crypto5BROF      -9.317     40.453   15.233  -0.230   0.8209    
+crypto5BRIF     -37.857     33.187   15.010  -1.141   0.2719    
+crypto5BRin     -69.077     41.347   14.957  -1.671   0.1156    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Correlation of Fixed Effects:
             (Intr) Gmrph1 Gmrph2 Gmrph3 Gmrph4 Gmrph5 sedmnt NO_TK_ c5BROF c5BRIF
-Geomrphlgy1  0.157                                                               
-Geomrphlgy2 -0.015 -0.319                                                        
-Geomrphlgy3  0.113  0.744 -0.428                                                 
-Geomrphlgy4 -0.165 -0.528 -0.194 -0.288                                          
-Geomrphlgy5 -0.170 -0.710  0.011 -0.679  0.329                                   
-sedimnt      0.168  0.645 -0.029  0.377 -0.624 -0.417                            
-NO_TK_AREA  -0.061 -0.073 -0.487  0.270  0.589 -0.021 -0.311                     
-crypto5BROF  0.062 -0.095 -0.408 -0.217  0.011  0.172 -0.094  0.033              
-crypto5BRIF  0.090  0.803 -0.202  0.776 -0.303 -0.683  0.556  0.110 -0.306       
-crypto5BRin -0.238 -0.577 -0.069 -0.249  0.690  0.545 -0.657  0.523 -0.187 -0.265
+Geomrphlgy1 -0.345                                                               
+Geomrphlgy2  0.372 -0.196                                                        
+Geomrphlgy3 -0.022  0.231 -0.298                                                 
+Geomrphlgy4  0.050 -0.307 -0.162 -0.313                                          
+Geomrphlgy5 -0.382 -0.042 -0.446 -0.179 -0.122                                   
+sedimnt     -0.213  0.077 -0.191 -0.236 -0.058  0.386                            
+NO_TK_AREA   0.072 -0.416 -0.299  0.003  0.237  0.110 -0.090                     
+crypto5BROF -0.112 -0.352 -0.302 -0.336  0.172  0.444  0.238  0.205              
+crypto5BRIF -0.177  0.407 -0.253  0.290 -0.013  0.000 -0.169 -0.208  0.136       
+crypto5BRin -0.193 -0.051 -0.517  0.226 -0.120  0.416  0.023  0.548  0.394  0.038
 
 R2 (marginal/conditional):
-           R2m       R2c
-[1,] 0.3092441 0.8675855
+           R2m      R2c
+[1,] 0.3090411 0.757735
 
 Variance Components:
-       grp        var1 var2     vcov    sdcor
-1 Location (Intercept) <NA> 50742.75 225.2615
-2 Residual        <NA> <NA> 12033.99 109.6996
+        grp        var1 var2      vcov     sdcor
+1 Dive_Site (Intercept) <NA> 13481.622 116.11039
+2  Residual        <NA> <NA>  7279.183  85.31813
 
 Type III tests (Satterthwaite):
 Type III Analysis of Variance Table with Kenward-Roger's method
-              Sum Sq Mean Sq NumDF   DenDF F value    Pr(>F)    
-Geomorphology 848208  169642     5  83.890 14.0020 6.036e-10 ***
-sedimnt        49488   49488     1  33.464  4.1124   0.05059 .  
-NO_TK_AREA     76107   76107     1 107.648  6.3243   0.01339 *  
-crypto5BROF      861     861     1  66.309  0.0715   0.78993    
-crypto5BRIF    23850   23850     1  26.207  1.9819   0.17094    
-crypto5BRin    11787   11787     1  36.253  0.9795   0.32889    
+              Sum Sq Mean Sq NumDF  DenDF F value  Pr(>F)  
+Geomorphology 108137 21627.3     5 15.053  2.9711 0.04628 *
+sedimnt         2371  2371.1     1 14.903  0.3257 0.57668  
+NO_TK_AREA      6713  6713.0     1 15.064  0.9222 0.35205  
+crypto5BROF      386   386.1     1 15.188  0.0530 0.82093  
+crypto5BRIF     9472  9471.7     1 14.966  1.3012 0.27192  
+crypto5BRin    20317 20316.9     1 14.913  2.7911 0.11564  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

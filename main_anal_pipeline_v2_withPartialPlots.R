@@ -94,7 +94,7 @@ data <- load_reef_data()
 create_output_directories <- function() {
   dirs <- c("figures","tables","models","ordination","diagnostics","reports")
   for (dir in dirs) if (!dir.exists(dir)) dir.create(dir, showWarnings = FALSE, recursive = TRUE)
-  cat("utput directories ready.\n")
+  cat("output directories ready.\n")
 }
 create_output_directories()
 
@@ -155,27 +155,27 @@ cat("=== DATA CLEANING AND PREPARATION ===\n")
 clean_data <- data %>%
   mutate(across(where(is.character), as.factor)) %>%
   filter(!if_any(any_of(c("biomass_kg_ha","abundance_ind_250m2","FRic","FEve","FDiv","FDis","RaoQ")), is.na)) %>%
-  mutate(Site_ID = paste(Location, Dive_Site, sep = "_")) %>%
-  group_by(Location) %>% filter(n() >= 3) %>% ungroup()
+  mutate(Site_ID = paste(Fishing_Ground, Dive_Site, sep = "_")) %>%
+  group_by(Fishing_Ground) %>% filter(n() >= 3) %>% ungroup()
 
 cat("Data cleaning completed:\n")
 cat("  - Original data:", nrow(data), "rows\n")
 cat("  - Cleaned data:", nrow(clean_data), "rows\n")
-cat("  - Locations:", paste(unique(clean_data$Location), collapse = ", "), "\n")
+cat("  - Locations:", paste(unique(clean_data$Fishing_Ground), collapse = ", "), "\n")
 
 
 #Pairwise PERMANOVA
 
 pairwise.adonis2 <- function(x, data, permutations = 999, method = "euclidean", p_adjust = "BH", ...) {
-  locations <- unique(data$Location)
+  locations <- unique(data$Fishing_Ground)
   results <- list(); pairwise_results <- data.frame()
   for (i in 1:(length(locations)-1)) for (j in (i+1):length(locations)) {
     loc1 <- locations[i]; loc2 <- locations[j]
-    pair_data <- data[data$Location %in% c(loc1, loc2), , drop = FALSE]
-    pair_matrix <- x[data$Location %in% c(loc1, loc2), , drop = FALSE]
+    pair_data <- data[data$Fishing_Ground %in% c(loc1, loc2), , drop = FALSE]
+    pair_matrix <- x[data$Fishing_Ground %in% c(loc1, loc2), , drop = FALSE]
     if (nrow(pair_matrix) > 2 && ncol(pair_matrix) > 0) {
       dist_matrix <- vegan::vegdist(pair_matrix, method = method)
-      permanova <- vegan::adonis2(dist_matrix ~ Location, data = pair_data, permutations = permutations)
+      permanova <- vegan::adonis2(dist_matrix ~ Fishing_Ground, data = pair_data, permutations = permutations)
       row <- data.frame(
         Comparison = paste(loc1, "vs", loc2),
         F_value = permanova$F[1], R2 = permanova$R2[1],
@@ -217,7 +217,7 @@ create_model_diagnostics <- function(model, response_var, model_type = "lm") {
                  aes(x=fitted, y=sqrt_abs_resid)) +
       geom_point(alpha=.6, size=2,na.rm=TRUE) +
       geom_smooth(method="loess", se=TRUE, color="blue", alpha=.2,na.rm=TRUE) +
-      labs(title=paste("Scale-Location Plot -", response_var),
+      labs(title=paste("Scale-Fishing_Ground Plot -", response_var),
            subtitle="Homoscedasticity check", x="Fitted values", y="√|Standardized residuals|") +
       theme_minimal() + theme(plot.title = element_text(face="bold"))
     
@@ -390,7 +390,7 @@ create_conditional_partial_plots <- function(results, output_prefix = "partial_p
     }
   }
   
-  cat("✅ Conditional partial plots completed!\n")
+  cat("Conditional partial plots completed!\n")
   return(plot_list)
 }
 
@@ -411,7 +411,7 @@ create_correlation_plot <- function(data, response_vars, method = "pearson") {
 
 #Non-parametric tests
 
-nonparametric_analysis <- function(data, response_vars, group_var = "Location") {
+nonparametric_analysis <- function(data, response_vars, group_var = "Fishing_Ground") {
   results <- list()
   cat("\n=== NON-PARAMETRIC ANALYSIS ===\n")
   for (resp in response_vars) {
@@ -437,15 +437,15 @@ nonparametric_analysis <- function(data, response_vars, group_var = "Location") 
 #PCA helper for plots
 create_pca_plots_comprehensive <- function(pca_result, metadata, response_vars) {
   pca_scores <- as.data.frame(pca_result$x)
-  pca_scores$Location <- if ("Location" %in% colnames(metadata)) metadata$Location else factor("Unknown")
+  pca_scores$Fishing_Ground <- if ("Fishing_Ground" %in% colnames(metadata)) metadata$Fishing_Ground else factor("Unknown")
   variance_explained <- round(100 * pca_result$sdev^2 / sum(pca_result$sdev^2), 2)
-  group_sizes <- table(pca_scores$Location)
+  group_sizes <- table(pca_scores$Fishing_Ground)
   has_ellipse <- names(group_sizes[group_sizes >= 3])
   
-  pca_main <- ggplot(pca_scores, aes(x=PC1, y=PC2, color=Location)) +
+  pca_main <- ggplot(pca_scores, aes(x=PC1, y=PC2, color=Fishing_Ground)) +
     geom_point(size=3, alpha=.8) +
     { if (length(has_ellipse) > 0)
-      stat_ellipse(data=subset(pca_scores, Location %in% has_ellipse),
+      stat_ellipse(data=subset(pca_scores, Fishing_Ground %in% has_ellipse),
                    level=.95, alpha=.2, size=1) else NULL } +
     labs(x=paste0("PC1 (", variance_explained[1], "%)"),
          y=paste0("PC2 (", variance_explained[2], "%)"),
@@ -596,14 +596,14 @@ run_univariate_panel <- function(analysis_data,
                                  response_vars,
                                  all_predictors,
                                  final_fixed_predictors,
-                                 random_effects = c("(1|Location)"),
+                                 random_effects = c("(1|Dive_Site)"),
                                  output_prefix = "univariate",
                                  scope = c("excluded_only","all"),
                                  save_results = TRUE) {
   scope <- match.arg(scope)
   preds <- if (scope == "excluded_only") setdiff(all_predictors, final_fixed_predictors) else all_predictors
   preds <- unique(preds[preds %in% names(analysis_data)])
-  preds <- preds[!preds %in% c("Location")]
+  preds <- preds[!preds %in% c("Fishing_Ground")]
   if (!length(preds)) { message("Univariate panel: nothing to test."); return(invisible(NULL)) }
   
   out_lm <- list(); out_lmm <- list()
@@ -611,7 +611,7 @@ run_univariate_panel <- function(analysis_data,
   for (resp in response_vars) {
     if (!resp %in% names(analysis_data)) next
     for (pr in preds) {
-      df <- analysis_data[, c(resp, pr, "Location"), drop = FALSE]
+      df <- analysis_data[, c(resp, pr, "Fishing_Ground"), drop = FALSE]
       df <- df[stats::complete.cases(df), , drop = FALSE]
       if (!nrow(df)) next
       
@@ -626,8 +626,8 @@ run_univariate_panel <- function(analysis_data,
       }
       
       #LMM with multiple locations 
-      if ("Location" %in% names(df) && length(unique(df$Location)) > 1) {
-        f_lmm <- stats::as.formula(paste(resp, "~", pr, "+ (1|Location)"))
+      if ("Fishing_Ground" %in% names(df) && length(unique(df$Fishing_Ground)) > 1) {
+        f_lmm <- stats::as.formula(paste(resp, "~", pr, "+ (1|Dive_Site)"))
         fit_lmm <- tryCatch(
           lmerTest::lmer(f_lmm, data = df,
                          control = lme4::lmerControl(optimizer = "bobyqa",
@@ -701,34 +701,34 @@ run_univariate_panel <- function(analysis_data,
 analysis_config <- list(
   core_ecological = list(
     response_vars = c("biomass_kg_ha", "abundance_ind_250m2", "FRic", "FEve"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Location",
+    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Fishing_Ground",
                        "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
                        "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
-    random_effects = c("(1|Location)"),
+    random_effects = c("(1|Dive_Site)"),
     description = "Core ecological variables analysis"
   ),
   functional_diversity = list(
     response_vars = c("FRic","FEve","FDiv","FDis","RaoQ"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Location",
+    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Fishing_Ground",
                        "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
                        "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
-    random_effects = c("(1|Location)"),
+    random_effects = c("(1|Dive_Site)"),
     description = "Functional diversity metrics analysis"
   ),
   biomass_focused = list(
     response_vars = c("biomass_kg_ha","abundance_ind_250m2"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Location",
+    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Fishing_Ground",
                        "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
                        "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
-    random_effects = c("(1|Location)"),#define the random effects
+    random_effects = c("(1|Dive_Site)"),
     description = "Biomass and abundance focused analysis"
   ),
   all_responses = list(
     response_vars = c("biomass_kg_ha","abundance_ind_250m2","FRic","FEve","FDiv","FDis","RaoQ"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Location",
+    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Fishing_Ground",
                        "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
                        "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
-    random_effects = c("(1|Location)"),
+    random_effects = c("(1|Dive_Site)"),
     description = "all response variables"
   )
 )
@@ -737,7 +737,7 @@ analysis_config <- list(
 analyze_reef_data_enhanced <- function(
     response_vars,
     predictor_vars,
-    random_effects = c("(1|Location)"),
+    random_effects = c("(1|Dive_Site)"),
     data = clean_data,
     output_prefix = "_analysis",
     create_plots = TRUE,
@@ -745,7 +745,7 @@ analyze_reef_data_enhanced <- function(
     run_diagnostics = TRUE,
     run_nonparametric = TRUE,
     # model-build options
-    lmm_location_as_random_only = TRUE,   # drop 'Location' from fixed if used as random
+    lmm_location_as_random_only = TRUE,   # drop 'Fishing_Ground' from fixed if used as random
     scale_predictors_for_LMM = TRUE,      # ALWAYS recommended
     scale_predictors_for_LM  = TRUE,      # generally recommended
     cor_threshold = 0.75,                 # numeric pairwise r limit
@@ -766,7 +766,7 @@ analyze_reef_data_enhanced <- function(
   
   #Build analysis dataset
   analysis_data <- data %>%
-    dplyr::select(dplyr::any_of(c(response_vars, predictor_vars, "Site_ID","Transect","Dive_Site","Location"))) %>%
+    dplyr::select(dplyr::any_of(c(response_vars, predictor_vars, "Site_ID","Transect","Dive_Site","Fishing_Ground"))) %>%
     dplyr::filter(stats::complete.cases(.))
   if (nrow(analysis_data) == 0) stop("No complete cases after filtering. Check inputs.")
   
@@ -783,22 +783,22 @@ analyze_reef_data_enhanced <- function(
   cat("Analysis dataset created:\n")
   cat("  - Variables:", length(unique(c(response_vars, predictor_vars))), "\n")
   cat("  - Observations:", nrow(analysis_data), "\n")
-  cat("  - Locations:", paste(utils::head(unique(analysis_data$Location), 20), collapse = ", "),
-      if (length(unique(analysis_data$Location)) > 20) " ... [truncated]" else "", "\n", sep = "")
+  cat("  - Locations:", paste(utils::head(unique(analysis_data$Fishing_Ground), 20), collapse = ", "),
+      if (length(unique(analysis_data$Fishing_Ground)) > 20) " ... [truncated]" else "", "\n", sep = "")
   if (length(scaled_cols)) cat("  - Scaled predictors:", paste(scaled_cols, collapse = ", "), "\n")
   
   #Store meta data
   results <- list(metadata = list(
     response_vars = response_vars, predictor_vars = predictor_vars, random_effects = random_effects,
-    sample_size = nrow(analysis_data), locations = unique(analysis_data$Location),
-    n_locations = length(unique(analysis_data$Location)), timestamp = Sys.time(),
+    sample_size = nrow(analysis_data), locations = unique(analysis_data$Fishing_Ground),
+    n_locations = length(unique(analysis_data$Fishing_Ground)), timestamp = Sys.time(),
     validation_issues = validation_issues, scaled_predictors = scaled_cols
   ))
   
   #Descriptive  stats
   cat("\n=== DESCRIPTIVE STATISTICS ===\n")
   location_summary <- analysis_data %>%
-    group_by(.data$Location) %>%
+    group_by(.data$Fishing_Ground) %>%
     summarise(
       n_transects = n(),
       across(all_of(response_vars),
@@ -813,7 +813,7 @@ analyze_reef_data_enhanced <- function(
     )
   overall_summary <- analysis_data %>%
     summarise(
-      n_total = n(), n_locations = n_distinct(.data$Location),
+      n_total = n(), n_locations = n_distinct(.data$Fishing_Ground),
       across(all_of(response_vars),
              list(mean=~mean(.x, na.rm=TRUE),
                   sd=~sd(.x, na.rm=TRUE),
@@ -835,13 +835,13 @@ analyze_reef_data_enhanced <- function(
   if (create_plots) {
     cat("\n=== VISUALIZATION ===\n")
     for (resp in response_vars) if (resp %in% names(analysis_data)) {
-      p_box <- ggplot(analysis_data, aes(x=Location, y=.data[[resp]], fill=Location)) +
+      p_box <- ggplot(analysis_data, aes(x=Fishing_Ground, y=.data[[resp]], fill=Fishing_Ground)) +
         geom_boxplot(alpha=.7, outlier.shape=NA) +
         geom_jitter(width=.2, alpha=.6, size=1.5) +
         stat_summary(fun=mean, geom="point", shape=18, size=3, color="red") +
-        labs(title=paste("Distribution of", resp, "by Location"),
+        labs(title=paste("Distribution of", resp, "by Fishing_Ground"),
              subtitle=glue("n = {nrow(analysis_data)} transects; red diamond = mean"),
-             y=resp, x="Location") +
+             y=resp, x="Fishing_Ground") +
         theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position="none") +
         scale_fill_viridis_d(option="viridis")
       plots[[paste0("boxplot_",resp)]] <- p_box; print(p_box)
@@ -878,7 +878,7 @@ analyze_reef_data_enhanced <- function(
 
   #Collinearity-aware fixed-effect set for LM & LMM
   fixed_candidates <- predictor_vars
-  if (lmm_location_as_random_only) fixed_candidates <- setdiff(fixed_candidates, "Location")
+  if (lmm_location_as_random_only) fixed_candidates <- setdiff(fixed_candidates, "Fishing_Ground")
   
   #A:Correlation screen
   cor_scr <- correlation_screen(analysis_data, predictors = fixed_candidates, thr = cor_threshold)
@@ -1026,8 +1026,8 @@ analyze_reef_data_enhanced <- function(
         control = lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 100000))
       ),
       error = function(e) {
-        cat("Complex LMM failed, trying simpler structure with (1|Location):\n")
-        simple_formula <- as.formula(paste(resp, "~", fixed_terms, "+ (1|Location)"))
+        cat("Complex LMM failed, trying simpler structure with (1|Dive_Site):\n")
+        simple_formula <- as.formula(paste(resp, "~", fixed_terms, "+ (1|Dive_Site)"))
         lmerTest::lmer(
           simple_formula,
           data = analysis_data,
@@ -1228,10 +1228,10 @@ analyze_reef_data_enhanced <- function(
     }
   } else cat("PCA skipped (need ≥2 numeric response variables).\n")
   
-  if (ncol(resp_mat) >= 1 && "Location" %in% names(analysis_data)) {
+  if (ncol(resp_mat) >= 1 && "Fishing_Ground" %in% names(analysis_data)) {
     dist_matrix <- vegan::vegdist(resp_mat, method = "euclidean")
-    permanova_overall <- vegan::adonis2(dist_matrix ~ Location, data = analysis_data, permutations = 999)
-    cat("\nOverall PERMANOVA by Location:\n"); print(permanova_overall)
+    permanova_overall <- vegan::adonis2(dist_matrix ~ Fishing_Ground, data = analysis_data, permutations = 999)
+    cat("\nOverall PERMANOVA by Fishing_Ground:\n"); print(permanova_overall)
     pairwise_perm <- pairwise.adonis2(resp_mat, analysis_data, permutations = 999, method = "euclidean", p_adjust = "BH")
     cat("\nPairwise PERMANOVA (BH):\n"); print(pairwise_perm$pairwise_results)
     results$permanova <- list(overall=permanova_overall, pairwise=pairwise_perm)
@@ -1240,7 +1240,7 @@ analyze_reef_data_enhanced <- function(
       if (nrow(pairwise_perm$pairwise_results) > 0)
         write.csv(pairwise_perm$pairwise_results, file.path("tables", paste0(output_prefix, "_permanova_pairwise.csv")), row.names = FALSE)
     }
-  } else cat("PERMANOVA skipped: insufficient response matrix or missing Location.\n")
+  } else cat("PERMANOVA skipped: insufficient response matrix or missing Fishing_Ground.\n")
   
   #Save LM models
   if (save_results && length(lm_results)) {
@@ -1254,7 +1254,7 @@ analyze_reef_data_enhanced <- function(
     run_univariate_panel(
       analysis_data          = analysis_data,
       response_vars          = response_vars,
-      all_predictors         = setdiff(unique(predictor_vars), "Location"),
+      all_predictors         = setdiff(unique(predictor_vars), "Fishing_Ground"),
       final_fixed_predictors = fixed_screened,
       random_effects         = random_effects,
       output_prefix          = univ_prefix,
@@ -1336,7 +1336,7 @@ res_fd <- analyze_reef_data_enhanced(
   create_plots = TRUE, save_results = TRUE, run_diagnostics = TRUE, run_nonparametric = TRUE,
   lmm_location_as_random_only = TRUE, scale_predictors_for_LMM = TRUE, scale_predictors_for_LM = TRUE,
   cor_threshold = 0.75, vif_threshold = 5, run_univariate_scope = "excluded_only",
-  ccreate_conditional_partial_plots = TRUE 
+  create_conditional_partial_plots = TRUE 
 )
 
 #Biomass focused
