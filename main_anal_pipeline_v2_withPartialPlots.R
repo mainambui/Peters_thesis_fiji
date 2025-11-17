@@ -1,5 +1,5 @@
-
-#ANALYSIS PIPELINE  — FIji Analyses
+#======================================================================
+#ANALYSIS PIPELINE  — Fiji Analyses
 #Data validation & cleaning
 #Linear (LM) & Mixed (LMM) models with collinearity control
 #Predictor scaling (LMM always; LM configurable)

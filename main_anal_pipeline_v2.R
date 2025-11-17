@@ -1,5 +1,5 @@
 # ======================================================================
-#ANALYSIS PIPELINE  — FIji Analyses
+#ANALYSIS PIPELINE  — Fiji Analyses
 #Data vcleaning
 #Linear (LM) & Mixed (LMM) models with collinearity control
 #Predictor scaling (LMM always; LM configurable)
@@ -67,9 +67,7 @@ attempt_type3 <- function(model, ddf = c("Kenward-Roger","Satterthwaite")) {
 #For reproducible steps (screening, DHARMa sims etc.)
 set.seed(42)
 
-
 # Working dir and  data loading
-
 cat("Setting up working directory and loading data...\n")
 if (!exists("custom_wd")) {
   custom_wd <- getwd()
@@ -92,9 +90,8 @@ data <- load_reef_data()
 
 
 #----------------------------
-#explore the dataset to see what vaeiables have bene loaded and think anout your reapose variables
-
-# Output directiries
+#explore the dataset to see what variables have been loaded and think about your response variables
+# Output directories
 # ---------------------------
 create_output_directories <- function() {
   dirs <- c("figures","tables","models","ordination","diagnostics","reports")
@@ -1218,4 +1215,3 @@ res_all <- analyze_reef_data_enhanced(
   lmm_location_as_random_only = TRUE, scale_predictors_for_LMM = TRUE, scale_predictors_for_LM = TRUE,
   cor_threshold = 0.75, vif_threshold = 5, run_univariate_scope = "excluded_only"
 )
-
