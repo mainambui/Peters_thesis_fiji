@@ -697,11 +697,13 @@ run_univariate_panel <- function(analysis_data,
 
 
 #CONFIGURATIONS
-##this is where you modify your predictir vars
+##this is where you modify your predictor vars
+
+# PH 19/11/25 - added DESIG variable in predictor_vars
 analysis_config <- list(
   core_ecological = list(
     response_vars = c("biomass_kg_ha", "abundance_ind_250m2", "FRic", "FEve"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Fishing_Ground",
+    predictor_vars = c("Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
                        "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
                        "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
     random_effects = c("(1|Dive_Site)"),
@@ -709,7 +711,7 @@ analysis_config <- list(
   ),
   functional_diversity = list(
     response_vars = c("FRic","FEve","FDiv","FDis","RaoQ"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Fishing_Ground",
+    predictor_vars = c("Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
                        "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
                        "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
     random_effects = c("(1|Dive_Site)"),
@@ -717,7 +719,7 @@ analysis_config <- list(
   ),
   biomass_focused = list(
     response_vars = c("biomass_kg_ha","abundance_ind_250m2"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Fishing_Ground",
+    predictor_vars = c("Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
                        "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
                        "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
     random_effects = c("(1|Dive_Site)"),
@@ -725,7 +727,7 @@ analysis_config <- list(
   ),
   all_responses = list(
     response_vars = c("biomass_kg_ha","abundance_ind_250m2","FRic","FEve","FDiv","FDis","RaoQ"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","NO_TK_AREA","Fishing_Ground",
+    predictor_vars = c("Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
                        "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
                        "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
     random_effects = c("(1|Dive_Site)"),
