@@ -696,7 +696,7 @@ run_univariate_panel <- function(analysis_data,
 }
 
 
-#CONFIGURATIONSu 
+#CONFIGURATIONS
 ##this is where you modify your predictir vars
 analysis_config <- list(
   core_ecological = list(
