@@ -703,37 +703,89 @@ run_univariate_panel <- function(analysis_data,
 analysis_config <- list(
   core_ecological = list(
     response_vars = c("biomass_kg_ha", "abundance_ind_250m2", "FRic", "FEve"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
-                       "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
-                       "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
+    predictor_vars = c(
+      "Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
+      "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
+      "transi15LR","transi15BRIF","transi15BRin","transi15BRout","transi15BRbtw",
+      "resid15LR","pare15BRout","resid15BRout","resid15BRIF","resid15BRbtw",
+      "pare15BRbtw","pare15LR","pare15BRin","pare15BRIF","pare15BRout",
+      "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"
+    ),
     random_effects = c("(1|Dive_Site)"),
     description = "Core ecological variables analysis"
   ),
+  
   functional_diversity = list(
     response_vars = c("FRic","FEve","FDiv","FDis","RaoQ"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
-                       "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
-                       "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
+    predictor_vars = c(
+      "Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
+      "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
+      "transi15LR","transi15BRIF","transi15BRin","transi15BRout","transi15BRbtw",
+      "resid15LR","pare15BRout","resid15BRout","resid15BRIF","resid15BRbtw",
+      "pare15BRbtw","pare15LR","pare15BRin","pare15BRIF","pare15BRout",
+      "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"
+    ),
     random_effects = c("(1|Dive_Site)"),
     description = "Functional diversity metrics analysis"
   ),
+  
   biomass_focused = list(
     response_vars = c("biomass_kg_ha","abundance_ind_250m2"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
-                       "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
-                       "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
+    predictor_vars = c(
+      "Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
+      "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
+      "transi15LR","transi15BRIF","transi15BRin","transi15BRout","transi15BRbtw",
+      "resid15LR","pare15BRout","resid15BRout","resid15BRIF","resid15BRbtw",
+      "pare15BRbtw","pare15LR","pare15BRin","pare15BRIF","pare15BRout",
+      "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"
+    ),
     random_effects = c("(1|Dive_Site)"),
     description = "Biomass and abundance focused analysis"
   ),
+  
   all_responses = list(
     response_vars = c("biomass_kg_ha","abundance_ind_250m2","FRic","FEve","FDiv","FDis","RaoQ"),
-    predictor_vars = c("Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
-                       "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
-                       "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"),
+    predictor_vars = c(
+      "Geomorphology","sedimnt","nutrint","DESIG","NO_TK_AREA","Fishing_Ground",
+      "crypto5BROF","crypto5BRIF","crypto5LR","crypto5BRin","crypto5BRout",
+      "transi15LR","transi15BRIF","transi15BRin","transi15BRout","transi15BRbtw",
+      "resid15LR","pare15BRout","resid15BRout","resid15BRIF","resid15BRbtw",
+      "pare15BRbtw","pare15LR","pare15BRin","pare15BRIF","pare15BRout",
+      "sst_sd_6_year_mean","sst_q90_6_year_mean","sst_mean_6_year_mean"
+    ),
     random_effects = c("(1|Dive_Site)"),
     description = "all response variables"
   )
 )
+
+
+
+
+# 1) Scale numeric predictors in-place (responses are NOT scaled)
+scale_predictors_inplace <- function(df, predictor_vars, center = TRUE, scale = TRUE) {
+  # keep only columns that exist and are numeric, and remove duplicates
+  num_preds <- unique(predictor_vars[predictor_vars %in% names(df)])
+  num_preds <- num_preds[sapply(num_preds, function(v) is.numeric(df[[v]]))]
+  
+  if (!length(num_preds)) {
+    return(list(data = df, scaled_cols = character(0)))
+  }
+  
+  cat("  - Scaling predictors:", paste(num_preds, collapse = ", "), "\n")
+  
+  df <- df %>%
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::all_of(num_preds),
+        ~ as.numeric(scale(.x, center = center, scale = scale))
+      )
+    )
+  
+  list(data = df, scaled_cols = num_preds)
+}
+
+
+
 
 #MAIN ANALYSIS FUNCTION
 analyze_reef_data_enhanced <- function(
@@ -775,6 +827,7 @@ analyze_reef_data_enhanced <- function(
   #Scaling (predictors only). LMM always; LM optional; we scale once here for both.
   to_scale <- predictor_vars[predictor_vars %in% names(analysis_data)]
   to_scale <- to_scale[sapply(to_scale, \(v) is.numeric(analysis_data[[v]]))]
+  to_scale <- unique(to_scale)  # <-- ensure no duplicates
   do_scale <- (scale_predictors_for_LMM || scale_predictors_for_LM)
   scaled_cols <- character(0)
   if (do_scale && length(to_scale)) {
@@ -1212,6 +1265,105 @@ analyze_reef_data_enhanced <- function(
   if (isTRUE(save_results) && nrow(model_comp_df) > 0) {
     utils::write.csv(model_comp_df, file = file.path("tables", paste0(output_prefix, "_model_comparison_AIC_BIC.csv")), row.names = FALSE)
   }
+  
+  #Top model coefficient table (for reporting)
+  if (isTRUE(save_results) && nrow(model_comp_df) > 0) {
+    
+    top_terms_list <- list()
+    
+    for (i in seq_len(nrow(model_comp_df))) {
+      resp <- model_comp_df$Response[i]
+      pref <- model_comp_df$Preferred[i]
+      sing <- model_comp_df$Singular_LMM[i]
+      
+      # Decide which model to use:
+      # - Use LMM only if preferred == "LMM", not singular, and exists
+      use_lmm <- identical(pref, "LMM") &&
+        !isTRUE(sing) &&
+        !is.null(mixed_results[[resp]]) &&
+        !is.null(mixed_results[[resp]]$model)
+      
+      if (use_lmm) {
+        mod_type <- "LMM"
+        mod      <- mixed_results[[resp]]$model
+        
+        # fixed-effect terms with p-values
+        td <- get_lmm_tidy_with_p(mod, effect = "fixed")
+        
+        # R² (marginal / conditional)
+        r2_vals <- mixed_results[[resp]]$r2
+        marg_r2 <- if (!is.null(r2_vals)) as.numeric(r2_vals[1]) else NA_real_
+        cond_r2 <- if (!is.null(r2_vals)) as.numeric(r2_vals[2]) else NA_real_
+        
+        if (!is.null(td) && nrow(td) > 0) {
+          td$Adj_R2        <- NA_real_
+          td$Marginal_R2   <- marg_r2
+          td$Conditional_R2 <- cond_r2
+        }
+        
+      } else {
+        # Fallback / preferred LM
+        mod_type <- "LM"
+        if (is.null(lm_results[[resp]]) || is.null(lm_results[[resp]]$model)) next
+        mod <- lm_results[[resp]]$model
+        
+        td <- broom::tidy(mod)  # estimate, std.error, statistic, p.value
+        
+        perf   <- lm_results[[resp]]$performance
+        adj_r2 <- if ("adj.r.squared" %in% names(perf)) perf$adj.r.squared else NA_real_
+        
+        if (!is.null(td) && nrow(td) > 0) {
+          td$Adj_R2        <- adj_r2
+          td$Marginal_R2   <- NA_real_
+          td$Conditional_R2 <- NA_real_
+        }
+      }
+      
+      if (!is.null(td) && nrow(td) > 0) {
+        # Attach meta columns
+        td$Response  <- resp
+        td$ModelType <- mod_type
+        
+        td$LM_AIC    <- model_comp_df$LM_AIC[i]
+        td$LMM_AIC   <- model_comp_df$LMM_AIC[i]
+        td$Delta_AIC <- model_comp_df$Delta_AIC[i]
+        td$LM_BIC    <- model_comp_df$LM_BIC[i]
+        td$LMM_BIC   <- model_comp_df$LMM_BIC[i]
+        td$Delta_BIC <- model_comp_df$Delta_BIC[i]
+        td$Preferred <- pref
+        
+        top_terms_list[[length(top_terms_list) + 1]] <- td
+      }
+    }
+    
+    if (length(top_terms_list)) {
+      top_terms <- dplyr::bind_rows(top_terms_list)
+      
+      # Reorder / subset columns for a paper-friendly table
+      wanted_cols <- c(
+        "Response", "ModelType", "term",
+        "estimate", "std.error", "statistic", "p.value",
+        "Adj_R2", "Marginal_R2", "Conditional_R2",
+        "LM_AIC", "LMM_AIC", "Delta_AIC",
+        "LM_BIC", "LMM_BIC", "Delta_BIC",
+        "Preferred"
+      )
+      wanted_cols <- intersect(wanted_cols, names(top_terms))
+      top_terms   <- top_terms[, wanted_cols, drop = FALSE]
+      
+      # Save and attach to results
+      utils::write.csv(
+        top_terms,
+        file = file.path("tables", paste0(output_prefix, "_top_model_terms.csv")),
+        row.names = FALSE
+      )
+      
+      results$top_model_terms <- top_terms
+    }
+  }
+  
+  
+  
   
   
   #PCA & PERMANOVA

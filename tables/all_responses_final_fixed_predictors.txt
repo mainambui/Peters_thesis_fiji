@@ -1,1 +1,1 @@
-Final fixed predictors: Geomorphology, sedimnt, NO_TK_AREA, crypto5BROF, crypto5BRIF, crypto5BRin
+Final fixed predictors: Geomorphology, nutrint, NO_TK_AREA, transi15LR, transi15BRbtw, resid15LR, resid15BRbtw, pare15BRbtw

@@ -1,5 +1,14 @@
 "var_removed","rival","r"
+"resid15BRout","pare15BRout",0.928460218930029
+"pare15BRout","crypto5BROF",0.819102152530741
+"transi15BRIF","transi15BRin",0.814116089140005
+"crypto5BROF","transi15BRout",0.859806903597631
 "sst_q90_6_year_mean","sst_mean_6_year_mean",0.997320393346538
+"crypto5BRout","transi15BRout",0.833335050263138
+"transi15BRin","transi15BRbtw",0.754400379438225
 "sst_mean_6_year_mean","sst_sd_6_year_mean",-0.980491680442485
-"nutrint","sedimnt",0.900597760509269
-"crypto5BRout","crypto5BROF",0.821499374878158
+"pare15BRin","crypto5BRin",0.823850790430706
+"pare15BRIF","resid15BRIF",0.84993834814746
+"crypto5BRIF","resid15BRIF",0.959120115296008
+"sedimnt","nutrint",0.900597760509269
+"pare15LR","resid15LR",0.843573415442949
