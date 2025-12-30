@@ -1,407 +1,504 @@
 
-====== Mixed Model: biomass_kg_ha ======
-Linear mixed model fit by REML. t-tests use Satterthwaite's method ['lmerModLmerTest']
+====== Mixed Model: logBiomass ======
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [lmerModLmerTest]
 Formula: mixed_formula
    Data: analysis_data
 Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
 
-REML criterion at convergence: 1662.1
+REML criterion at convergence: 225.4
 
 Scaled residuals: 
-    Min      1Q  Median      3Q     Max 
--3.4095 -0.3538 -0.1245  0.2123  4.8193 
+     Min       1Q   Median       3Q      Max 
+-3.14833 -0.46659  0.05936  0.59492  2.85695 
 
 Random effects:
- Groups    Name        Variance Std.Dev.
- Dive_Site (Intercept) 38648    196.6   
- Residual              92170    303.6   
-Number of obs: 125, groups:  Dive_Site, 26
+ Groups         Name        Variance Std.Dev.
+ Fishing_Ground (Intercept) 0.3344   0.5783  
+ Residual                   0.5250   0.7246  
+Number of obs: 94, groups:  Fishing_Ground, 5
 
 Fixed effects:
-                Estimate Std. Error        df t value Pr(>|t|)    
-(Intercept)     375.6999    57.4411   13.4741   6.541 1.58e-05 ***
-Geomorphology1 -316.8195   134.0812   13.3658  -2.363   0.0339 *  
-Geomorphology2   57.1897   185.0140   13.8124   0.309   0.7619    
-Geomorphology3 -364.9667   261.9987   13.4952  -1.393   0.1861    
-Geomorphology4  469.7783   158.2223   13.5963   2.969   0.0104 *  
-Geomorphology5   89.6533   113.1586   13.5388   0.792   0.4419    
-nutrint        -120.4553    72.0437   13.5305  -1.672   0.1175    
-NO_TK_AREA      110.3163    76.5256   13.5421   1.442   0.1722    
-transi15LR      -13.2972   102.3658   13.2115  -0.130   0.8986    
-transi15BRbtw  -128.3939    77.8761   13.2686  -1.649   0.1227    
-resid15LR        94.2839    74.5341   13.3461   1.265   0.2275    
-resid15BRbtw     -0.4647    67.6508   13.9285  -0.007   0.9946    
-pare15BRbtw     -88.3208    76.9091   14.1988  -1.148   0.2698    
+             Estimate Std. Error       df t value Pr(>|t|)   
+(Intercept)   5.64022    0.26999  1.64329  20.890  0.00547 **
+sedimnt      -0.14838    0.22246  7.31510  -0.667  0.52527   
+NO_TK_AREA   -0.15104    0.13411 27.38868  -1.126  0.26985   
+grav_NC      -0.07024    0.39913  2.01296  -0.176  0.87642   
+Median_Depth -0.11184    0.08631 81.88634  -1.296  0.19869   
+resid15LR     0.38718    0.21097  9.82813   1.835  0.09687 . 
+resid15BRIF  -0.15861    0.23742  2.58174  -0.668  0.55891   
+transi15LR   -0.12947    0.14260 14.23916  -0.908  0.37903   
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+Correlation of Fixed Effects:
+            (Intr) sedmnt NO_TK_ grv_NC Mdn_Dp rs15LR r15BRI
+sedimnt     -0.022                                          
+NO_TK_AREA   0.022  0.037                                   
+grav_NC      0.021  0.651  0.173                            
+Median_Dpth -0.018  0.105  0.062  0.005                     
+resid15LR   -0.055 -0.013 -0.209 -0.522  0.073              
+resid15BRIF  0.035  0.131  0.095  0.163 -0.042 -0.535       
+transi15LR   0.052 -0.162  0.138  0.361 -0.070 -0.726  0.525
+
 R2 (marginal/conditional):
            R2m       R2c
-[1,] 0.2996156 0.5065338
+[1,] 0.1566628 0.4847828
 
 Variance Components:
-        grp        var1 var2     vcov    sdcor
-1 Dive_Site (Intercept) <NA> 38648.26 196.5916
-2  Residual        <NA> <NA> 92169.79 303.5948
+             grp        var1 var2      vcov     sdcor
+1 Fishing_Ground (Intercept) <NA> 0.3343742 0.5782510
+2       Residual        <NA> <NA> 0.5250376 0.7245948
 
 Type III tests (Satterthwaite):
 Type III Analysis of Variance Table with Kenward-Roger's method
-               Sum Sq Mean Sq NumDF  DenDF F value  Pr(>F)  
-Geomorphology 1113708  222742     5 13.134  2.4166 0.09227 .
-nutrint        257633  257633     1 13.008  2.7952 0.11841  
-NO_TK_AREA     191454  191454     1 13.019  2.0772 0.17313  
-transi15LR       1555    1555     1 12.700  0.0169 0.89869  
-transi15BRbtw  250460  250460     1 12.755  2.7174 0.12366  
-resid15LR      147403  147403     1 12.830  1.5993 0.22850  
-resid15BRbtw        4       4     1 13.393  0.0000 0.99462  
-pare15BRbtw    121538  121538     1 13.654  1.3186 0.27056  
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+              Sum Sq Mean Sq NumDF  DenDF F value Pr(>F)
+sedimnt      0.18138 0.18138     1  6.164  0.3455 0.5776
+NO_TK_AREA   0.52632 0.52632     1 24.045  1.0024 0.3267
+grav_NC      0.01577 0.01577     1  1.679  0.0300 0.8810
+Median_Depth 0.79605 0.79605     1 81.095  1.5162 0.2218
+resid15LR    1.36181 1.36181     1  8.324  2.5937 0.1445
+resid15BRIF  0.17562 0.17562     1  2.155  0.3345 0.6177
+transi15LR   0.34905 0.34905     1 12.168  0.6648 0.4305
 
-====== Mixed Model: abundance_ind_250m2 ======
-Linear mixed model fit by REML. t-tests use Satterthwaite's method ['lmerModLmerTest']
+====== Mixed Model: logabun ======
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [lmerModLmerTest]
 Formula: mixed_formula
    Data: analysis_data
 Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
 
-REML criterion at convergence: 1392.2
+REML criterion at convergence: 194.8
 
 Scaled residuals: 
-    Min      1Q  Median      3Q     Max 
--1.8077 -0.4164 -0.0797  0.3362  4.9141 
+     Min       1Q   Median       3Q      Max 
+-1.89033 -0.58201  0.00778  0.56086  2.69386 
 
 Random effects:
- Groups    Name        Variance Std.Dev.
- Dive_Site (Intercept) 12343    111.10  
- Residual               7280     85.32  
-Number of obs: 125, groups:  Dive_Site, 26
+ Groups         Name        Variance Std.Dev.
+ Fishing_Ground (Intercept) 0.7397   0.8601  
+ Residual                   0.3583   0.5986  
+Number of obs: 94, groups:  Fishing_Ground, 5
 
 Fixed effects:
-               Estimate Std. Error       df t value Pr(>|t|)    
-(Intercept)     224.123     28.117   13.021   7.971  2.3e-06 ***
-Geomorphology1 -139.999     65.718   12.988  -2.130   0.0528 .  
-Geomorphology2  184.443     90.182   13.131   2.045   0.0614 .  
-Geomorphology3 -174.913    128.219   13.025  -1.364   0.1956    
-Geomorphology4  183.915     77.336   13.056   2.378   0.0334 *  
-Geomorphology5  -41.836     55.346   13.041  -0.756   0.4631    
-nutrint         -39.934     35.243   13.034  -1.133   0.2776    
-NO_TK_AREA       -2.219     37.422   13.049  -0.059   0.9536    
-transi15LR       -8.220     50.277   12.932  -0.164   0.8727    
-transi15BRbtw   -89.375     38.217   12.957  -2.339   0.0360 *  
-resid15LR        -9.470     36.535   12.990  -0.259   0.7995    
-resid15BRbtw    -23.012     32.930   13.166  -0.699   0.4968    
-pare15BRbtw     -67.888     37.319   13.246  -1.819   0.0916 .  
+             Estimate Std. Error       df t value Pr(>|t|)   
+(Intercept)   5.06402    0.39014  1.55566  12.980  0.01429 * 
+sedimnt       0.21451    0.24548  4.66221   0.874  0.42492   
+NO_TK_AREA   -0.11191    0.12732 15.54209  -0.879  0.39281   
+grav_NC      -0.34046    0.55527  1.71579  -0.613  0.61107   
+Median_Depth -0.03699    0.07292 85.83898  -0.507  0.61326   
+resid15LR     0.79443    0.22167  7.28275   3.584  0.00836 **
+resid15BRIF  -0.47207    0.29639  3.64893  -1.593  0.19320   
+transi15LR   -0.53838    0.14505  8.52696  -3.712  0.00531 **
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+Correlation of Fixed Effects:
+            (Intr) sedmnt NO_TK_ grv_NC Mdn_Dp rs15LR r15BRI
+sedimnt      0.001                                          
+NO_TK_AREA   0.019  0.253                                   
+grav_NC      0.023  0.766  0.424                            
+Median_Dpth -0.015  0.074  0.073 -0.018                     
+resid15LR   -0.043 -0.303 -0.309 -0.605  0.135              
+resid15BRIF  0.028  0.295  0.074  0.185 -0.107 -0.623       
+transi15LR   0.042  0.192  0.286  0.553 -0.122 -0.820  0.564
+
 R2 (marginal/conditional):
            R2m       R2c
-[1,] 0.3591007 0.7622434
+[1,] 0.2329455 0.7497112
 
 Variance Components:
-        grp        var1 var2      vcov     sdcor
-1 Dive_Site (Intercept) <NA> 12343.245 111.10016
-2  Residual        <NA> <NA>  7279.526  85.32014
+             grp        var1 var2      vcov     sdcor
+1 Fishing_Ground (Intercept) <NA> 0.7397483 0.8600862
+2       Residual        <NA> <NA> 0.3582876 0.5985713
 
 Type III tests (Satterthwaite):
 Type III Analysis of Variance Table with Kenward-Roger's method
-              Sum Sq Mean Sq NumDF  DenDF F value  Pr(>F)  
-Geomorphology  67662   13532     5 13.045  1.8590 0.17018  
-nutrint         9346    9346     1 12.999  1.2839 0.27765  
-NO_TK_AREA        26      26     1 13.013  0.0035 0.95363  
-transi15LR       195     195     1 12.897  0.0267 0.87266  
-transi15BRbtw  39811   39811     1 12.921  5.4689 0.03609 *
-resid15LR        489     489     1 12.955  0.0672 0.79956  
-resid15BRbtw    3555    3555     1 13.130  0.4883 0.49686  
-pare15BRbtw    24089   24089     1 13.210  3.3091 0.09163 .
+             Sum Sq Mean Sq NumDF  DenDF F value   Pr(>F)   
+sedimnt      0.2400  0.2400     1  5.488  0.6698 0.447203   
+NO_TK_AREA   0.2602  0.2602     1 17.871  0.7262 0.405400   
+grav_NC      0.1316  0.1316     1  2.033  0.3673 0.605211   
+Median_Depth 0.0880  0.0880     1 85.865  0.2456 0.621471   
+resid15LR    3.7625  3.7625     1  8.524 10.5013 0.010903 * 
+resid15BRIF  0.6183  0.6183     1  4.305  1.7258 0.254597   
+transi15LR   4.2518  4.2518     1  9.953 11.8671 0.006323 **
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-====== Mixed Model: FRic ======
-Linear mixed model fit by REML. t-tests use Satterthwaite's method ['lmerModLmerTest']
+====== Mixed Model: fric ======
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [lmerModLmerTest]
 Formula: mixed_formula
    Data: analysis_data
 Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
 
-REML criterion at convergence: -5134
+REML criterion at convergence: -189.3
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--4.0057 -0.1986 -0.0386  0.1033  8.4255 
+-1.6858 -0.4507 -0.1476  0.3362  3.0001 
 
 Random effects:
- Groups    Name        Variance  Std.Dev. 
- Dive_Site (Intercept) 2.395e-22 1.548e-11
- Residual              3.972e-22 1.993e-11
-Number of obs: 125, groups:  Dive_Site, 26
+ Groups         Name        Variance Std.Dev.
+ Fishing_Ground (Intercept) 0.05050  0.22472 
+ Residual                   0.00391  0.06253 
+Number of obs: 94, groups:  Fishing_Ground, 5
 
 Fixed effects:
-                 Estimate Std. Error         df t value Pr(>|t|)
-(Intercept)     9.603e-12  4.287e-12  4.836e-09   2.240        1
-Geomorphology1 -2.234e-11  1.001e-11  4.836e-09  -2.231        1
-Geomorphology2  1.482e-11  1.379e-11  4.836e-09   1.074        1
-Geomorphology3 -2.518e-11  1.955e-11  4.836e-09  -1.288        1
-Geomorphology4  3.706e-11  1.180e-11  4.836e-09   3.140        1
-Geomorphology5 -9.468e-12  8.444e-12  4.836e-09  -1.121        1
-nutrint        -8.568e-12  5.376e-12  4.836e-09  -1.594        1
-NO_TK_AREA      5.559e-12  5.710e-12  4.836e-09   0.974        1
-transi15LR      4.396e-12  7.649e-12  4.836e-09   0.575        1
-transi15BRbtw  -1.705e-11  5.818e-12  4.836e-09  -2.930        1
-resid15LR      -9.452e-12  5.566e-12  4.836e-09  -1.698        1
-resid15BRbtw    3.851e-13  5.040e-12  4.836e-09   0.076        1
-pare15BRbtw    -1.250e-11  5.724e-12  4.836e-09  -2.185        1
+             Estimate Std. Error       df t value Pr(>|t|)   
+(Intercept)   0.07591    0.10075  1.58524   0.753   0.5470   
+sedimnt      -0.04307    0.04772  2.53066  -0.903   0.4443   
+NO_TK_AREA    0.02721    0.02079  3.30373   1.309   0.2742   
+grav_NC      -0.08896    0.13934  1.64866  -0.638   0.6004   
+Median_Depth  0.01767    0.00777 84.44386   2.275   0.0255 * 
+resid15LR     0.09274    0.03657  4.90437   2.536   0.0531 . 
+resid15BRIF  -0.15915    0.04661 22.70615  -3.415   0.0024 **
+transi15LR   -0.06665    0.02431  3.94894  -2.741   0.0526 . 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) sedmnt NO_TK_ grv_NC Mdn_Dp rs15LR r15BRI
+sedimnt      0.017                                          
+NO_TK_AREA   0.019  0.698                                   
+grav_NC      0.022  0.919  0.801                            
+Median_Dpth -0.008  0.009  0.050 -0.023                     
+resid15LR   -0.028 -0.715 -0.618 -0.779  0.159              
+resid15BRIF  0.016  0.297  0.045  0.127 -0.183 -0.583       
+transi15LR   0.028  0.702  0.652  0.808 -0.135 -0.923  0.490
 
 R2 (marginal/conditional):
            R2m       R2c
-[1,] 0.2468258 0.5301287
+[1,] 0.3576291 0.9538398
 
 Variance Components:
-        grp        var1 var2         vcov        sdcor
-1 Dive_Site (Intercept) <NA> 2.394996e-22 1.547577e-11
-2  Residual        <NA> <NA> 3.972214e-22 1.993041e-11
+             grp        var1 var2        vcov      sdcor
+1 Fishing_Ground (Intercept) <NA> 0.050497311 0.22471607
+2       Residual        <NA> <NA> 0.003909633 0.06252706
 
 Type III tests (Satterthwaite):
 Type III Analysis of Variance Table with Kenward-Roger's method
-                  Sum Sq    Mean Sq NumDF  DenDF F value  Pr(>F)  
-Geomorphology 4.5804e-21 9.1610e-22     5 13.105  2.3062 0.10393  
-nutrint       1.0088e-21 1.0088e-21     1 13.003  2.5397 0.13502  
-NO_TK_AREA    3.7640e-22 3.7640e-22     1 13.020  0.9475 0.34809  
-transi15LR    1.3120e-22 1.3120e-22     1 12.765  0.3302 0.57554  
-transi15BRbtw 3.4097e-21 3.4097e-21     1 12.812  8.5839 0.01187 *
-resid15LR     1.1451e-21 1.1451e-21     1 12.877  2.8828 0.11355  
-resid15BRbtw  2.3000e-24 2.3000e-24     1 13.304  0.0058 0.94023  
-pare15BRbtw   1.8956e-21 1.8956e-21     1 13.502  4.7722 0.04710 *
+               Sum Sq  Mean Sq NumDF  DenDF F value   Pr(>F)   
+sedimnt      0.003063 0.003063     1  3.973  0.7835 0.426405   
+NO_TK_AREA   0.006672 0.006672     1  5.160  1.7065 0.246637   
+grav_NC      0.001584 0.001584     1  2.604  0.4052 0.575891   
+Median_Depth 0.019871 0.019871     1 85.019  5.0827 0.026737 * 
+resid15LR    0.022752 0.022752     1  7.577  5.8195 0.044008 * 
+resid15BRIF  0.034778 0.034778     1 31.331  8.8954 0.005495 **
+transi15LR   0.027519 0.027519     1  6.140  7.0386 0.037050 * 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-====== Mixed Model: FEve ======
-Linear mixed model fit by REML. t-tests use Satterthwaite's method ['lmerModLmerTest']
+====== Mixed Model: fdiv ======
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [lmerModLmerTest]
 Formula: mixed_formula
    Data: analysis_data
 Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
 
-REML criterion at convergence: -301.4
+REML criterion at convergence: -183.3
 
 Scaled residuals: 
-    Min      1Q  Median      3Q     Max 
--3.1696 -0.5064 -0.0184  0.6583  2.1088 
+     Min       1Q   Median       3Q      Max 
+-2.65175 -0.51146  0.02718  0.66468  1.87721 
 
 Random effects:
- Groups    Name        Variance  Std.Dev.
- Dive_Site (Intercept) 0.0004175 0.02043 
- Residual              0.0023751 0.04874 
-Number of obs: 125, groups:  Dive_Site, 26
+ Groups         Name        Variance Std.Dev.
+ Fishing_Ground (Intercept) 0.009163 0.09572 
+ Residual                   0.004415 0.06645 
+Number of obs: 94, groups:  Fishing_Ground, 5
 
 Fixed effects:
-                 Estimate Std. Error         df t value Pr(>|t|)    
-(Intercept)     6.713e-01  7.211e-03  1.354e+01  93.093  < 2e-16 ***
-Geomorphology1  3.219e-02  1.681e-02  1.335e+01   1.915  0.07717 .  
-Geomorphology2 -7.092e-02  2.332e-02  1.409e+01  -3.041  0.00874 ** 
-Geomorphology3  3.118e-02  3.290e-02  1.359e+01   0.948  0.35988    
-Geomorphology4 -1.497e-02  1.989e-02  1.376e+01  -0.752  0.46445    
-Geomorphology5 -1.278e-02  1.422e-02  1.365e+01  -0.899  0.38431    
-nutrint         6.228e-03  9.051e-03  1.366e+01   0.688  0.50289    
-NO_TK_AREA     -9.179e-05  9.613e-03  1.362e+01  -0.010  0.99252    
-transi15LR     -1.790e-02  1.281e-02  1.313e+01  -1.397  0.18549    
-transi15BRbtw   3.374e-03  9.752e-03  1.320e+01   0.346  0.73482    
-resid15LR       1.797e-02  9.341e-03  1.328e+01   1.924  0.07602 .  
-resid15BRbtw    1.417e-03  8.537e-03  1.429e+01   0.166  0.87049    
-pare15BRbtw     3.128e-03  9.735e-03  1.476e+01   0.321  0.75248    
+              Estimate Std. Error        df t value Pr(>|t|)   
+(Intercept)   0.841270   0.043418  2.255595  19.376  0.00148 **
+sedimnt       0.014670   0.027290  6.636819   0.538  0.60842   
+NO_TK_AREA    0.037602   0.014145 20.886054   2.658  0.01475 * 
+grav_NC      -0.038557   0.061788  2.485021  -0.624  0.58513   
+Median_Depth  0.002535   0.008096 85.892959   0.313  0.75497   
+resid15LR     0.049329   0.024636 10.237099   2.002  0.07244 . 
+resid15BRIF  -0.034616   0.032956  5.247650  -1.050  0.33949   
+transi15LR   -0.019104   0.016119 11.895481  -1.185  0.25907   
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+Correlation of Fixed Effects:
+            (Intr) sedmnt NO_TK_ grv_NC Mdn_Dp rs15LR r15BRI
+sedimnt      0.001                                          
+NO_TK_AREA   0.019  0.254                                   
+grav_NC      0.023  0.766  0.425                            
+Median_Dpth -0.015  0.074  0.073 -0.018                     
+resid15LR   -0.043 -0.304 -0.310 -0.605  0.135              
+resid15BRIF  0.028  0.295  0.074  0.185 -0.107 -0.624       
+transi15LR   0.042  0.194  0.287  0.554 -0.122 -0.821  0.564
+
 R2 (marginal/conditional):
-           R2m       R2c
-[1,] 0.2407973 0.3542934
+           R2m      R2c
+[1,] 0.2062564 0.741898
 
 Variance Components:
-        grp        var1 var2         vcov      sdcor
-1 Dive_Site (Intercept) <NA> 0.0004174725 0.02043214
-2  Residual        <NA> <NA> 0.0023751027 0.04873503
+             grp        var1 var2        vcov      sdcor
+1 Fishing_Ground (Intercept) <NA> 0.009163053 0.09572384
+2       Residual        <NA> <NA> 0.004415270 0.06644750
 
 Type III tests (Satterthwaite):
 Type III Analysis of Variance Table with Kenward-Roger's method
                 Sum Sq   Mean Sq NumDF  DenDF F value  Pr(>F)  
-Geomorphology 0.034053 0.0068106     5 13.214  2.8673 0.05765 .
-nutrint       0.001124 0.0011244     1 13.030  0.4734 0.50349  
-NO_TK_AREA    0.000000 0.0000002     1 12.997  0.0001 0.99253  
-transi15LR    0.004636 0.0046356     1 12.525  1.9518 0.18666  
-transi15BRbtw 0.000284 0.0002841     1 12.589  0.1196 0.73518  
-resid15LR     0.008781 0.0087813     1 12.670  3.6972 0.07727 .
-resid15BRbtw  0.000065 0.0000654     1 13.640  0.0275 0.87064  
-pare15BRbtw   0.000245 0.0002451     1 14.093  0.1032 0.75273  
+sedimnt      0.0011194 0.0011194     1  5.482  0.2535 0.63418  
+NO_TK_AREA   0.0293402 0.0293402     1 17.809  6.6452 0.01907 *
+grav_NC      0.0016801 0.0016801     1  2.034  0.3805 0.59926  
+Median_Depth 0.0004131 0.0004131     1 85.869  0.0936 0.76044  
+resid15LR    0.0144741 0.0144741     1  8.523  3.2782 0.10550  
+resid15BRIF  0.0033130 0.0033130     1  4.322  0.7503 0.43182  
+transi15LR   0.0053429 0.0053429     1  9.941  1.2101 0.29724  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-====== Mixed Model: FDiv ======
-Linear mixed model fit by REML. t-tests use Satterthwaite's method ['lmerModLmerTest']
+====== Mixed Model: fspe ======
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [lmerModLmerTest]
 Formula: mixed_formula
    Data: analysis_data
 Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
 
-REML criterion at convergence: -360.2
+REML criterion at convergence: -131.4
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--3.3273 -0.3849  0.1294  0.6266  2.1302 
+-2.1177 -0.5026 -0.1582  0.2370  3.6612 
 
 Random effects:
- Groups    Name        Variance  Std.Dev.
- Dive_Site (Intercept) 0.0002094 0.01447 
- Residual              0.0014168 0.03764 
-Number of obs: 125, groups:  Dive_Site, 26
+ Groups         Name        Variance Std.Dev.
+ Fishing_Ground (Intercept) 0.103948 0.32241 
+ Residual                   0.007648 0.08745 
+Number of obs: 94, groups:  Fishing_Ground, 5
 
 Fixed effects:
-                Estimate Std. Error        df t value Pr(>|t|)    
-(Intercept)     0.914579   0.005362 13.868162 170.567   <2e-16 ***
-Geomorphology1 -0.022212   0.012496 13.663518  -1.778   0.0977 .  
-Geomorphology2 -0.009098   0.017352 14.473536  -0.524   0.6080    
-Geomorphology3 -0.008151   0.024466 13.927574  -0.333   0.7440    
-Geomorphology4  0.021506   0.014797 14.116161   1.453   0.1680    
-Geomorphology5 -0.002138   0.010573 13.990065  -0.202   0.8426    
-nutrint        -0.003819   0.006731 14.002065  -0.567   0.5794    
-NO_TK_AREA      0.011129   0.007149 13.951471   1.557   0.1419    
-transi15LR      0.005445   0.009520 13.421784   0.572   0.5768    
-transi15BRbtw  -0.005197   0.007248 13.489516  -0.717   0.4856    
-resid15LR      -0.003521   0.006943 13.573249  -0.507   0.6202    
-resid15BRbtw   -0.013860   0.006355 14.696430  -2.181   0.0459 *  
-pare15BRbtw    -0.004085   0.007251 15.221492  -0.563   0.5814    
+             Estimate Std. Error       df t value Pr(>|t|)   
+(Intercept)   0.40893    0.14454  1.70407   2.829  0.12596   
+sedimnt      -0.03389    0.06810  2.67834  -0.498  0.65668   
+NO_TK_AREA    0.02609    0.02960  3.44197   0.882  0.43522   
+grav_NC      -0.12134    0.19980  1.76996  -0.607  0.61232   
+Median_Depth  0.02806    0.01087 84.46377   2.581  0.01156 * 
+resid15LR     0.14485    0.05190  5.14770   2.791  0.03720 * 
+resid15BRIF  -0.22931    0.06560 25.49569  -3.495  0.00175 **
+transi15LR   -0.09914    0.03456  4.13690  -2.869  0.04376 * 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) sedmnt NO_TK_ grv_NC Mdn_Dp rs15LR r15BRI
+sedimnt      0.018                                          
+NO_TK_AREA   0.019  0.708                                   
+grav_NC      0.022  0.922  0.809                            
+Median_Dpth -0.008  0.008  0.049 -0.023                     
+resid15LR   -0.028 -0.723 -0.628 -0.784  0.158              
+resid15BRIF  0.016  0.294  0.045  0.125 -0.184 -0.578       
+transi15LR   0.027  0.712  0.663  0.814 -0.134 -0.926  0.485
 
 R2 (marginal/conditional):
            R2m       R2c
-[1,] 0.1608211 0.2688648
+[1,] 0.3421621 0.9549149
 
 Variance Components:
-        grp        var1 var2         vcov      sdcor
-1 Dive_Site (Intercept) <NA> 0.0002093693 0.01446960
-2  Residual        <NA> <NA> 0.0014168097 0.03764053
+             grp        var1 var2        vcov      sdcor
+1 Fishing_Ground (Intercept) <NA> 0.103948349 0.32241022
+2       Residual        <NA> <NA> 0.007648313 0.08745463
 
 Type III tests (Satterthwaite):
 Type III Analysis of Variance Table with Kenward-Roger's method
-                 Sum Sq   Mean Sq NumDF  DenDF F value  Pr(>F)  
-Geomorphology 0.0078452 0.0015690     5 13.230  1.1074 0.40216  
-nutrint       0.0004560 0.0004560     1 13.037  0.3218 0.58016  
-NO_TK_AREA    0.0034287 0.0034287     1 12.989  2.4200 0.14381  
-transi15LR    0.0004633 0.0004633     1 12.491  0.3270 0.57759  
-transi15BRbtw 0.0007278 0.0007278     1 12.555  0.5137 0.48667  
-resid15LR     0.0003638 0.0003638     1 12.633  0.2568 0.62105  
-resid15BRbtw  0.0067342 0.0067342     1 13.690  4.7531 0.04722 *
-pare15BRbtw   0.0004494 0.0004494     1 14.184  0.3172 0.58208  
+               Sum Sq  Mean Sq NumDF  DenDF F value   Pr(>F)   
+sedimnt      0.001826 0.001826     1  3.941  0.2387 0.651063   
+NO_TK_AREA   0.005925 0.005925     1  5.043  0.7747 0.418734   
+grav_NC      0.002806 0.002806     1  2.618  0.3668 0.593152   
+Median_Depth 0.050090 0.050090     1 84.966  6.5491 0.012265 * 
+resid15LR    0.054156 0.054156     1  7.471  7.0808 0.030562 * 
+resid15BRIF  0.071816 0.071816     1 33.227  9.3898 0.004309 **
+transi15LR   0.059140 0.059140     1  6.038  7.7324 0.031756 * 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-====== Mixed Model: FDis ======
-Linear mixed model fit by REML. t-tests use Satterthwaite's method ['lmerModLmerTest']
+====== Mixed Model: fori ======
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [lmerModLmerTest]
 Formula: mixed_formula
    Data: analysis_data
 Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
 
-REML criterion at convergence: -365.2
+REML criterion at convergence: -206.7
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--3.3314 -0.5837  0.0490  0.6630  2.0022 
+-1.4127 -0.4209 -0.1088  0.2051  5.0952 
 
 Random effects:
- Groups    Name        Variance  Std.Dev.
- Dive_Site (Intercept) 0.0005105 0.02259 
- Residual              0.0012738 0.03569 
-Number of obs: 125, groups:  Dive_Site, 26
+ Groups         Name        Variance Std.Dev.
+ Fishing_Ground (Intercept) 0.000000 0.00000 
+ Residual                   0.003573 0.05977 
+Number of obs: 94, groups:  Fishing_Ground, 5
 
 Fixed effects:
-                Estimate Std. Error        df t value Pr(>|t|)    
-(Intercept)     0.164902   0.006652 12.739440  24.789 3.68e-12 ***
-Geomorphology1  0.024738   0.015527 12.632958   1.593    0.136    
-Geomorphology2 -0.026170   0.021430 13.071448  -1.221    0.244    
-Geomorphology3  0.030987   0.030342 12.760664   1.021    0.326    
-Geomorphology4 -0.019944   0.018325 12.860017  -1.088    0.296    
-Geomorphology5  0.003596   0.013105 12.803023   0.274    0.788    
-nutrint         0.006265   0.008344 12.795499   0.751    0.466    
-NO_TK_AREA      0.005709   0.008863 12.805359   0.644    0.531    
-transi15LR     -0.009732   0.011853 12.482379  -0.821    0.427    
-transi15BRbtw   0.012965   0.009018 12.537583   1.438    0.175    
-resid15LR       0.003639   0.008631 12.612448   0.422    0.680    
-resid15BRbtw    0.007705   0.007837 13.185695   0.983    0.343    
-pare15BRbtw     0.013815   0.008910 13.452009   1.551    0.144    
+               Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)   0.0653458  0.0061652 86.0000000  10.599   <2e-16 ***
+sedimnt      -0.0226705  0.0102070 86.0000000  -2.221   0.0290 *  
+NO_TK_AREA   -0.0103478  0.0070888 86.0000000  -1.460   0.1480    
+grav_NC      -0.0256833  0.0125160 86.0000000  -2.052   0.0432 *  
+Median_Depth -0.0087437  0.0065339 86.0000000  -1.338   0.1844    
+resid15LR     0.0004545  0.0109443 86.0000000   0.042   0.9670    
+resid15BRIF  -0.0082793  0.0073889 86.0000000  -1.120   0.2656    
+transi15LR    0.0006866  0.0082639 86.0000000   0.083   0.9340    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+Correlation of Fixed Effects:
+            (Intr) sedmnt NO_TK_ grv_NC Mdn_Dp rs15LR r15BRI
+sedimnt      0.000                                          
+NO_TK_AREA   0.000 -0.017                                   
+grav_NC      0.000  0.626 -0.080                            
+Median_Dpth  0.000 -0.007 -0.156  0.179                     
+resid15LR    0.000 -0.046 -0.167 -0.601 -0.222              
+resid15BRIF  0.000 -0.433 -0.001 -0.149  0.140 -0.178       
+transi15LR   0.000 -0.376 -0.148 -0.012  0.139 -0.409  0.448
+optimizer (bobyqa) convergence code: 0 (OK)
+boundary (singular) fit: see help('isSingular')
+
+
 R2 (marginal/conditional):
            R2m       R2c
-[1,] 0.1259281 0.3760164
+[1,] 0.1779963 0.1779963
 
 Variance Components:
-        grp        var1 var2         vcov      sdcor
-1 Dive_Site (Intercept) <NA> 0.0005105181 0.02259465
-2  Residual        <NA> <NA> 0.0012737696 0.03568991
+             grp        var1 var2        vcov     sdcor
+1 Fishing_Ground (Intercept) <NA> 0.000000000 0.0000000
+2       Residual        <NA> <NA> 0.003572884 0.0597736
 
 Type III tests (Satterthwaite):
 Type III Analysis of Variance Table with Kenward-Roger's method
-                 Sum Sq    Mean Sq NumDF  DenDF F value Pr(>F)
-Geomorphology 0.0042929 0.00085857     5 13.138  0.6740 0.6504
-nutrint       0.0007181 0.00071810     1 13.009  0.5638 0.4661
-NO_TK_AREA    0.0005283 0.00052826     1 13.019  0.4147 0.5308
-transi15LR    0.0008586 0.00085864     1 12.691  0.6741 0.4268
-transi15BRbtw 0.0026323 0.00263227     1 12.747  2.0665 0.1747
-resid15LR     0.0002263 0.00022625     1 12.823  0.1776 0.6804
-resid15BRbtw  0.0012309 0.00123093     1 13.404  0.9664 0.3430
-pare15BRbtw   0.0030619 0.00306187     1 13.675  2.4038 0.1439
+                Sum Sq   Mean Sq NumDF  DenDF F value Pr(>F)
+sedimnt      0.0059380 0.0059380     1  0.855  1.6620 0.4458
+NO_TK_AREA   0.0013940 0.0013940     1  0.579  0.3902 0.6957
+grav_NC      0.0093692 0.0093692     1  0.525  2.6223 0.4806
+Median_Depth 0.0047101 0.0047101     1 35.349  1.3183 0.2586
+resid15LR    0.0000029 0.0000029     1  1.976  0.0008 0.9799
+resid15BRIF  0.0025822 0.0025822     1  0.404  0.7227 0.6703
+transi15LR   0.0000129 0.0000129     1  3.855  0.0036 0.9551
 
-====== Mixed Model: RaoQ ======
-Linear mixed model fit by REML. t-tests use Satterthwaite's method ['lmerModLmerTest']
+====== Mixed Model: feve ======
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [lmerModLmerTest]
 Formula: mixed_formula
    Data: analysis_data
 Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
 
-REML criterion at convergence: -627.4
+REML criterion at convergence: -136.6
 
 Scaled residuals: 
-    Min      1Q  Median      3Q     Max 
--2.5017 -0.6103 -0.1212  0.5766  3.2642 
+     Min       1Q   Median       3Q      Max 
+-2.68653 -0.71271 -0.05158  0.76558  2.02042 
 
 Random effects:
- Groups    Name        Variance  Std.Dev.
- Dive_Site (Intercept) 2.616e-05 0.005114
- Residual              1.282e-04 0.011321
-Number of obs: 125, groups:  Dive_Site, 26
+ Groups         Name        Variance  Std.Dev. 
+ Fishing_Ground (Intercept) 2.976e-17 5.456e-09
+ Residual                   8.073e-03 8.985e-02
+Number of obs: 94, groups:  Fishing_Ground, 5
 
 Fixed effects:
-                 Estimate Std. Error         df t value Pr(>|t|)    
-(Intercept)     0.0357849  0.0017359 12.6057832  20.615 4.36e-11 ***
-Geomorphology1  0.0054004  0.0040476 12.4452394   1.334    0.206    
-Geomorphology2 -0.0057223  0.0056092 13.0885626  -1.020    0.326    
-Geomorphology3  0.0084735  0.0079196 12.6477021   1.070    0.305    
-Geomorphology4 -0.0047113  0.0047874 12.7961861  -0.984    0.343    
-Geomorphology5  0.0020284  0.0034219 12.7014189   0.593    0.564    
-nutrint         0.0005733  0.0021785 12.7042523   0.263    0.797    
-NO_TK_AREA      0.0020150  0.0023140 12.6822079   0.871    0.400    
-transi15LR     -0.0039265  0.0030856 12.2441319  -1.273    0.227    
-transi15BRbtw   0.0027827  0.0023486 12.3066571   1.185    0.258    
-resid15LR       0.0003365  0.0022493 12.3872728   0.150    0.884    
-resid15BRbtw    0.0029677  0.0020533 13.2626436   1.445    0.172    
-pare15BRbtw     0.0026107  0.0023401 13.6715355   1.116    0.284    
+               Estimate Std. Error         df t value Pr(>|t|)    
+(Intercept)   0.4216599  0.0092675 86.0000000  45.499   <2e-16 ***
+sedimnt       0.0272966  0.0153432 86.0000000   1.779   0.0788 .  
+NO_TK_AREA   -0.0170976  0.0106560 86.0000000  -1.605   0.1123    
+grav_NC       0.0008891  0.0188141 86.0000000   0.047   0.9624    
+Median_Depth  0.0130250  0.0098218 86.0000000   1.326   0.1883    
+resid15LR     0.0031429  0.0164516 86.0000000   0.191   0.8489    
+resid15BRIF  -0.0212194  0.0111071 86.0000000  -1.910   0.0594 .  
+transi15LR   -0.0084265  0.0124223 86.0000000  -0.678   0.4994    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+Correlation of Fixed Effects:
+            (Intr) sedmnt NO_TK_ grv_NC Mdn_Dp rs15LR r15BRI
+sedimnt      0.000                                          
+NO_TK_AREA   0.000 -0.017                                   
+grav_NC      0.000  0.626 -0.080                            
+Median_Dpth  0.000 -0.007 -0.156  0.179                     
+resid15LR    0.000 -0.046 -0.167 -0.601 -0.222              
+resid15BRIF  0.000 -0.433 -0.001 -0.149  0.140 -0.178       
+transi15LR   0.000 -0.376 -0.148 -0.012  0.139 -0.409  0.448
+optimizer (bobyqa) convergence code: 0 (OK)
+boundary (singular) fit: see help('isSingular')
+
+
 R2 (marginal/conditional):
            R2m       R2c
-[1,] 0.1232774 0.2718776
+[1,] 0.1372919 0.1372919
 
 Variance Components:
-        grp        var1 var2         vcov      sdcor
-1 Dive_Site (Intercept) <NA> 0.0000261577 0.00511446
-2  Residual        <NA> <NA> 0.0001281695 0.01132120
+             grp        var1 var2         vcov        sdcor
+1 Fishing_Ground (Intercept) <NA> 2.976273e-17 5.455523e-09
+2       Residual        <NA> <NA> 8.073378e-03 8.985198e-02
 
 Type III tests (Satterthwaite):
 Type III Analysis of Variance Table with Kenward-Roger's method
-                  Sum Sq    Mean Sq NumDF  DenDF F value Pr(>F)
-Geomorphology 0.00040081 8.0162e-05     5 13.201  0.6254 0.6835
-nutrint       0.00000887 8.8750e-06     1 13.025  0.0692 0.7966
-NO_TK_AREA    0.00009709 9.7088e-05     1 13.003  0.7575 0.3999
-transi15LR    0.00020748 2.0748e-04     1 12.555  1.6188 0.2263
-transi15BRbtw 0.00017981 1.7981e-04     1 12.619  1.4029 0.2581
-resid15LR     0.00000286 2.8640e-06     1 12.701  0.0223 0.8835
-resid15BRbtw  0.00026761 2.6761e-04     1 13.596  2.0879 0.1711
-pare15BRbtw   0.00015949 1.5949e-04     1 14.014  1.2443 0.2834
+                Sum Sq   Mean Sq NumDF  DenDF F value Pr(>F)
+sedimnt      0.0086086 0.0086086     1  0.855  1.0663 0.5117
+NO_TK_AREA   0.0038057 0.0038057     1  0.579  0.4714 0.6732
+grav_NC      0.0000112 0.0000112     1  0.525  0.0014 0.9796
+Median_Depth 0.0104520 0.0104520     1 35.349  1.2946 0.2629
+resid15LR    0.0001384 0.0001384     1  1.976  0.0171 0.9079
+resid15BRIF  0.0169618 0.0169618     1  0.404  2.1010 0.5587
+transi15LR   0.0019415 0.0019415     1  3.855  0.2405 0.6505
+
+====== Mixed Model: fdis ======
+Linear mixed model fit by REML. t-tests use Satterthwaite's method [lmerModLmerTest]
+Formula: mixed_formula
+   Data: analysis_data
+Control: lme4::lmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 1e+05))
+
+REML criterion at convergence: -107.8
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.7010 -0.6207 -0.0948  0.5274  3.1845 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ Fishing_Ground (Intercept) 0.05981  0.2446  
+ Residual                   0.01034  0.1017  
+Number of obs: 94, groups:  Fishing_Ground, 5
+
+Fixed effects:
+             Estimate Std. Error       df t value Pr(>|t|)   
+(Intercept)   0.43096    0.10996  1.04335   3.919  0.15095   
+sedimnt       0.00598    0.05762  2.16293   0.104  0.92617   
+NO_TK_AREA    0.04638    0.02654  4.02868   1.748  0.15489   
+grav_NC      -0.09946    0.15355  1.10888  -0.648  0.62527   
+Median_Depth  0.03603    0.01255 85.46921   2.871  0.00515 **
+resid15LR     0.11190    0.04807  4.18635   2.328  0.07753 . 
+resid15BRIF  -0.16027    0.06629  5.90543  -2.418  0.05268 . 
+transi15LR   -0.11109    0.03136  3.78601  -3.543  0.02623 * 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) sedmnt NO_TK_ grv_NC Mdn_Dp rs15LR r15BRI
+sedimnt      0.013                                          
+NO_TK_AREA   0.019  0.509                                   
+grav_NC      0.023  0.862  0.656                            
+Median_Dpth -0.011  0.031  0.063 -0.025                     
+resid15LR   -0.034 -0.559 -0.466 -0.698  0.161              
+resid15BRIF  0.021  0.333  0.058  0.160 -0.156 -0.634       
+transi15LR   0.033  0.511  0.483  0.706 -0.141 -0.885  0.552
+
+R2 (marginal/conditional):
+           R2m       R2c
+[1,] 0.3071347 0.8978895
+
+Variance Components:
+             grp        var1 var2       vcov     sdcor
+1 Fishing_Ground (Intercept) <NA> 0.05981293 0.2445668
+2       Residual        <NA> <NA> 0.01033852 0.1016785
+
+Type III tests (Satterthwaite):
+Type III Analysis of Variance Table with Kenward-Roger's method
+               Sum Sq  Mean Sq NumDF  DenDF F value   Pr(>F)   
+sedimnt      0.000103 0.000103     1  4.531  0.0099 0.924884   
+NO_TK_AREA   0.031142 0.031142     1  8.239  3.0122 0.119760   
+grav_NC      0.004278 0.004278     1  2.355  0.4138 0.577100   
+Median_Depth 0.082942 0.082942     1 85.753  8.0226 0.005756 **
+resid15LR    0.047331 0.047331     1  8.544  4.5781 0.062655 . 
+resid15BRIF  0.041728 0.041728     1 11.795  4.0362 0.067985 . 
+transi15LR   0.115384 0.115384     1  7.767 11.1605 0.010664 * 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

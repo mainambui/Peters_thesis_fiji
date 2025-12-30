@@ -1,0 +1,5 @@
+"analysis","response","predictor","pred_type","n","r2","p_value","p_adj"
+"functionalDiv_traitbased","fdiv","Rnetflow","numeric",94,0.144195024456954,0.000160150960604373,0.000480629898326795
+"functionalDiv_traitbased","fdiv","Cnetflow","numeric",94,0.149962112267589,0.000115319274815318,0.000480629898326795
+"functionalDiv_traitbased","fdiv","transi15BRIF","numeric",94,0.144188541120184,0.000160209966108932,0.000480629898326795
+"functionalDiv_traitbased","feve","crypto5LR","numeric",94,0.0857005269007355,0.00419229021161781,0.0377306119045603

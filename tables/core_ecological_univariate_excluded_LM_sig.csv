@@ -1,0 +1,11 @@
+"analysis","response","predictor","pred_type","n","r2","p_value","p_adj"
+"core_ecological","logBiomass","nutrint","numeric",94,0.192268829931273,9.85244593167129e-06,8.86720133850416e-05
+"core_ecological","logBiomass","crypto5LR","numeric",94,0.168233285136293,4.03200395077439e-05,0.000181440177784847
+"core_ecological","logBiomass","pare5BRin","numeric",94,0.10703145990058,0.0012885559555537,0.00386566786666109
+"core_ecological","logBiomass","Rnetflow","numeric",94,0.0577240579105623,0.0196744222196084,0.0252847369746554
+"core_ecological","logBiomass","Cnetflow","numeric",94,0.0504549449422689,0.0295145400529238,0.0295145400529238
+"core_ecological","logBiomass","transi15BRIF","numeric",94,0.055332582849665,0.0224753217552493,0.0252847369746554
+"core_ecological","logBiomass","sst_sd_6_year_mean","numeric",94,0.0779088491316886,0.00644290272869946,0.00966435409304919
+"core_ecological","logBiomass","sst_q90_6_year_mean","numeric",94,0.0788880043934028,0.00610419941666925,0.00966435409304919
+"core_ecological","logBiomass","sst_mean_6_year_mean","numeric",94,0.0798888167279303,0.00577641121818587,0.00966435409304919
+"core_ecological","feve","crypto5LR","numeric",94,0.0857005269007355,0.00419229021161781,0.0377306119045603

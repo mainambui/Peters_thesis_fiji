@@ -3,9 +3,9 @@ Permutation: free
 Number of permutations: 999
 
 vegan::adonis2(formula = dist_matrix ~ Fishing_Ground, data = analysis_data, permutations = 999)
-          Df SumOfSqs      R2      F Pr(>F)  
-Model      7  2072015 0.09215 1.6966  0.086 .
-Residual 117 20413073 0.90785                
-Total    124 22485088 1.00000                
+         Df SumOfSqs      R2      F Pr(>F)   
+Model     4   14.277 0.13032 3.3342  0.004 **
+Residual 89   95.272 0.86968                 
+Total    93  109.549 1.00000                 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
